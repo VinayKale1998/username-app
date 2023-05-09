@@ -11,6 +11,15 @@
     margin-bottom: 0.5rem;
   }
   
+  .valid{
+    background-color: rgb(185, 209, 201);
+  }
+
+  .inValid{
+    background-color: rgb(230, 158, 158);
+  }
+
+
   .input input {
     font: inherit;
     display: block;
