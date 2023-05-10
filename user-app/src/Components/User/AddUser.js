@@ -1,14 +1,20 @@
 import Card from "../UI/Card";
 import classes from "./AddUser.module.css";
 import Button from "../UI/Button";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import ErrorModal from "../UI/ErrorModal";
 
 export default function AddUser(props) {
   const [userName, setName] = useState("");
   const [age, setAge] = useState("");
 
+  // using a new hook useRef() which will establish a value when linked with a tag-in the form below 
+  // we can use this as a sub. for useState for fetching data when submitting
+  const enteredName= useRef();
+  const enteredAge= useRef();
   const[error,setError]=useState();
+
+
 
   const [nameValid, setNameValid] = useState(true);
   const [ageValid, setAgeValid] = useState(true);
@@ -47,13 +53,21 @@ export default function AddUser(props) {
 
     const userData= {
         key:Math.random(),
-    name:userName,
-    age:age}
+    name:enteredName.current.value,
+    age:enteredAge.current.value}
 
     props.onItemAdd(userData)
 
-    setName("");
-    setAge("");
+    // setName("");
+    // setAge("");
+
+    //we use a cheeky workaround that should be avoided in bigger useCases
+    //we actually manipulate the dom using ref which defies our original idea of only 
+    //managing the state with react, hence the input component become uncontrolled
+
+    enteredName.current.value=''
+    enteredAge.current.value=''
+
   };
   
   const dismissHandler=()=>{
@@ -75,7 +89,7 @@ export default function AddUser(props) {
             type="text"
             id="userName"
             onChange={userAddNameHandler}
-            value={userName}
+            ref={enteredName}
           />
           <label htmlFor="year"> Age</label>
           <input
@@ -83,7 +97,8 @@ export default function AddUser(props) {
             type="number"
             id="year"
             onChange={userAgeHandler}
-            value={age}
+       
+            ref={enteredAge}
           />
           <Button className="button" > Add User</Button>
         </form>
