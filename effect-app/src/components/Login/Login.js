@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
+import AuthContext from "../../Store/auth-context";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
@@ -66,6 +67,8 @@ const Login = (props) => {
     formValid: null,
   });
 
+  const ctx= useContext(AuthContext);
+
   const Timer = (props) => {
     setInterval(() => {
       setTime(new Date().toLocaleTimeString());
@@ -108,10 +111,11 @@ useEffect(() => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(inputState.emailEntered, inputState.pwEntered);
+    ctx.onLogin(inputState.emailEntered, inputState.pwEntered);
   };
 
   return (
+    
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
         <Timer time={time}></Timer>
