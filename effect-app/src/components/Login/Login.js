@@ -11,6 +11,7 @@ const reducer = (state, action) => {
       emailValid: action.val.includes("@"),
       pwEntered: state.pwEntered,
       pwValid: state.pwValid,
+      formValid: state.formValid,
     };
   }
   if (action.type === "pwInput") {
@@ -18,7 +19,8 @@ const reducer = (state, action) => {
       emailEntered: state.emailEntered,
       emailValid: state.emailValid,
       pwEntered: action.val,
-      pwValid: action.val.length > 6,
+      pwValid: action.val.trim().length > 6,
+      formValid: state.formValid,
     };
   } else if (action.type === "pwBlur") {
     return {
@@ -26,6 +28,15 @@ const reducer = (state, action) => {
       emailValid: state.emailValid,
       pwEntered: state.pwEntered,
       pwValid: false,
+      formValid: state.formValid,
+    };
+  } else if (action.type === "submit") {
+    return {
+      emailEntered: state.emailEntered,
+      emailValid: state.emailValid,
+      pwEntered: state.pwEntered,
+      pwValid: state.pwValid,
+      formValid: state.emailValid && state.pwValid,
     };
   } else if (action.type === "inputBlur") {
     return {
@@ -33,6 +44,7 @@ const reducer = (state, action) => {
       emailValid: false,
       pwEntered: state.pwEntered,
       pwValid: state.pwValid,
+      formValid: state.formValid,
     };
   }
 
@@ -43,7 +55,7 @@ const Login = (props) => {
   // const [emailIsValid, setEmailIsValid] = useState();
   // const [enteredPassword, setEnteredPassword] = useState('');
   // const [passwordIsValid, setPasswordIsValid] = useState();
-  const [formIsValid, setFormIsValid] = useState(false);
+  // const [formIsValid, setFormIsValid] = useState(false);
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   const [inputState, dispatchAction] = useReducer(reducer, {
@@ -51,6 +63,7 @@ const Login = (props) => {
     emailValid: null,
     pwEntered: "",
     pwValid: null,
+    formValid: null,
   });
 
   const Timer = (props) => {
@@ -59,21 +72,22 @@ const Login = (props) => {
     }, 1000);
     return <div> {props.time}</div>;
   };
+  
+//dependencies which might changes// 
+const {emailValid: emValid} =  inputState;
+const {pwValid: pwalid}=inputState;
 
-  useEffect(() => {
+useEffect(() => {
     const timeHandler = setTimeout(() => {
       console.log("Checking Validity");
-      setFormIsValid(
-        inputState.emailEntered.includes("@") &&
-          inputState.pwEntered.trim().length > 6
-      );
+      dispatchAction({ type: "submit" });
     }, 1000);
 
     return () => {
       console.log("return called");
       clearTimeout(timeHandler);
     };
-  }, [inputState]);
+  }, [emValid,pwalid]);
 
   const emailChangeHandler = (event) => {
     // setEnteredEmail(event.target.value);
@@ -130,7 +144,11 @@ const Login = (props) => {
           />
         </div>
         <div className={classes.actions}>
-          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
+          <Button
+            type="submit"
+            className={classes.btn}
+            disabled={!inputState.formValid}
+          >
             Login
           </Button>
         </div>
