@@ -74,8 +74,8 @@ const Login = (props) => {
   };
   
 //dependencies which might changes// 
-const {emailValid: emValid} =  inputState;
-const {pwValid: pwalid}=inputState;
+const {emailValid: emValid} =  inputState;//
+const {pwValid: pwalid}=inputState;//true
 
 useEffect(() => {
     const timeHandler = setTimeout(() => {
