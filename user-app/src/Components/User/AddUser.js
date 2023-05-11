@@ -1,7 +1,7 @@
 import Card from "../UI/Card";
 import classes from "./AddUser.module.css";
 import Button from "../UI/Button";
-import { useState,useRef } from "react";
+import React,{ useState,useRef } from "react";
 import ErrorModal from "../UI/ErrorModal";
 
 export default function AddUser(props) {
@@ -33,7 +33,7 @@ export default function AddUser(props) {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    if (userName.trim() === "" || age.trim() === "") {
+    if (enteredName.current.value.trim() === "" || enteredAge.current.value.trim() === "") {
         setError(
             {
                 title:"Invalid Input",
@@ -43,13 +43,17 @@ export default function AddUser(props) {
       return;
     }
 
-    if (+age.trim() < 1) {
-      setAgeValid(false);
+    if (+enteredAge.current.value.trim()< 1) {
+      setError( {
+        title:"Invalid Input",
+        message:"Please enter an age above"
+    });
 
       
        
     }
 
+    console.log(enteredAge.current.value)
 
     const userData= {
         key:Math.random(),
@@ -76,7 +80,7 @@ export default function AddUser(props) {
 
 
   return (
-    <div>
+    <React.Fragment>
 
        {error?<ErrorModal title={error.title} message ={error.message} onDismiss={dismissHandler}></ErrorModal>:""}
       
@@ -89,6 +93,7 @@ export default function AddUser(props) {
             type="text"
             id="userName"
             onChange={userAddNameHandler}
+          
             ref={enteredName}
           />
           <label htmlFor="year"> Age</label>
@@ -105,6 +110,6 @@ export default function AddUser(props) {
       </div>
     </Card>
    
-    </div>
+    </React.Fragment>
   );
 }
