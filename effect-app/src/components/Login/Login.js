@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, { useState, useEffect, useReducer, useContext, useRef } from "react";
 import AuthContext from "../../Store/auth-context";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
+import Input from "../UI/Input/Input";
 
 const reducer = (state, action) => {
   if (action.type === "emailInput") {
@@ -67,7 +68,7 @@ const Login = (props) => {
     formValid: null,
   });
 
-  const ctx= useContext(AuthContext);
+  const ctx = useContext(AuthContext);
 
   const Timer = (props) => {
     setInterval(() => {
@@ -75,12 +76,12 @@ const Login = (props) => {
     }, 1000);
     return <div> {props.time}</div>;
   };
-  
-//dependencies which might changes// 
-const {emailValid: emValid} =  inputState;//
-const {pwValid: pwalid}=inputState;//true
 
-useEffect(() => {
+  //dependencies which might changes//
+  const { emailValid: emValid } = inputState; //
+  const { pwValid: pwalid } = inputState; //true
+
+  useEffect(() => {
     const timeHandler = setTimeout(() => {
       console.log("Checking Validity");
       dispatchAction({ type: "submit" });
@@ -90,7 +91,10 @@ useEffect(() => {
       console.log("return called");
       clearTimeout(timeHandler);
     };
-  }, [emValid,pwalid]);
+  }, [emValid, pwalid]);
+
+    const emailRef= useRef()
+    const pwRef= useRef()
 
   const emailChangeHandler = (event) => {
     // setEnteredEmail(event.target.value);
@@ -111,15 +115,51 @@ useEffect(() => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    if(inputState.formValid){
     ctx.onLogin(inputState.emailEntered, inputState.pwEntered);
+    }
+    else if(!inputState.emailValid){
+      emailRef.current.focus();
+    }
+
+    else if (!inputState.pwValid)
+    {
+      pwRef.current.focus();
+    }
   };
 
+
+
   return (
-    
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
-        <Timer time={time}></Timer>
-        <div
+        <Input
+        ref= {emailRef}
+          name="Email"
+          value={inputState.emailEntered}
+          className={`${classes.control} ${
+            inputState.emailValid === false ? classes.invalid : ""
+          }`}
+          id="Email"
+          type="Email"
+          onChange={emailChangeHandler}
+          onBlur={validateEmailHandler}
+          placeholder="Enter Email"
+        ></Input>
+        <Input
+        ref= {pwRef}
+          name="Password"
+          value={inputState.pwEntered}
+          className={`${classes.control} ${
+            inputState.pwValid === false ? classes.invalid : ""
+          }`}
+          id="Password"
+          type="Password"
+          onChange={passwordChangeHandler}
+          onBlur={validatePasswordHandler}
+          placeholder="Enter Password"
+        ></Input>
+        {/* <div
           className={`${classes.control} ${
             inputState.emailValid === false ? classes.invalid : ""
           }`}
@@ -132,8 +172,9 @@ useEffect(() => {
             onChange={emailChangeHandler}
             onBlur={validateEmailHandler}
           />
-        </div>
-        <div
+        </div> */}
+
+        {/* <div
           className={`${classes.control} ${
             inputState.pwValid === false ? classes.invalid : ""
           }`}
@@ -146,12 +187,12 @@ useEffect(() => {
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           />
-        </div>
+        </div> */}
         <div className={classes.actions}>
           <Button
             type="submit"
             className={classes.btn}
-            disabled={!inputState.formValid}
+           
           >
             Login
           </Button>
