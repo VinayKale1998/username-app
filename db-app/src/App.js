@@ -1,52 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
 
-import MoviesList from "./components/MoviesList";
-import "./App.css";
+import MoviesList from './components/MoviesList';
+import AddMovie from './components/AddMovie';
+import './App.css';
 
 function App() {
-  const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(false);
-  const [errorMessage, setError] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const fetchData = async () => {
-    setLoading(true);
+  const fetchMoviesHandler = useCallback(async () => {
+    setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://swapi.py4e.com/api/film");
+      const response = await fetch('https://food-app-c6d36-default-rtdb.firebaseio.com/movies.json');
       if (!response.ok) {
-        const error = new Error("something went wrong");
-        throw error;
+        throw new Error('Something went wrong!');
       }
-      
-      
-      const data = await response.json();
-      
 
-      const movies = data.results.map((movie) => {
-        return {
-          title: movie.title,
-          openingText: movie.opening_crawl,
-          releaseDate: movie.release_date,
-        };
-      });
-      setData(movies);
+      const data = await response.json();
+      console.log(data)
+      
+      const movies=[];
+
+      for(const key in data)
+      {
+       movies.push({...data[key],key:key})
+      }
+   
+      setMovies(movies)
+    
     } catch (error) {
       setError(error.message);
     }
-    setLoading(false);
-  };
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+
+    
+  }, [fetchMoviesHandler]);
+
+  const addMovieHandler= async(movie)=> {
+
+    
+   const response=  await fetch("https://food-app-c6d36-default-rtdb.firebaseio.com/movies.json",{
+        method:"POST",
+        body:JSON.stringify(movie),
+        headers:{
+          'content-type': 'application/json'
+        }
+   })
+   const data =  await response.json()
+   
+   console.log(data);
+
+   
+  
+  }
+
+  let content = <p>Found no movies.</p>;
+
+  if (movies.length > 0) {
+    content = <MoviesList movies={movies} />;
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
+  }
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
 
   return (
     <React.Fragment>
       <section>
-        <button onClick={fetchData}>Fetch Movies</button>
+        <AddMovie onAddMovie={addMovieHandler} />
       </section>
       <section>
-        {isloading && data.length === 0 && <h1>Loading.....</h1>}
-        {!isloading && data.length > 0 && <MoviesList movies={data} />}
-        {!isloading && data.length == 0 && !errorMessage && <h1> No movies found</h1>}
-        {!isloading && errorMessage != null && <h1>{errorMessage}</h1>}
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
+      <section>{content}</section>
     </React.Fragment>
   );
 }
