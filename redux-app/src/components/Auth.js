@@ -1,6 +1,6 @@
 import classes from "./Auth.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../store";
+import { authActions } from "../store/authSlice";
 import { useState } from "react";
 import React from 'react'
 import UserProfile from "./UserProfile"
