@@ -1,5 +1,6 @@
 import CartButton from '../Cart/CartButton';
 import classes from './MainHeader.module.css';
+import Dummy from "./Dummy"
 
 const MainHeader = (props) => {
   return (
@@ -8,7 +9,9 @@ const MainHeader = (props) => {
       <nav>
         <ul>
           <li>
+            {console.log("main header called")}
             <CartButton />
+        
           </li>
         </ul>
       </nav>

@@ -14,3 +14,12 @@
   padding: 0;
   margin: 0;
 }
+.total{
+display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background:local ;
+  background-color: darkslategrey;
+  border-radius: 5px;
+  padding: 5px 5px 5px
+}
