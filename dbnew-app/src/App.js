@@ -30,10 +30,12 @@ function App() {
       });
       setMovies(transformedMovies);
     } catch (error) {
-      setError(error.message);
+      
     }
     setIsLoading(false);
   }, []);
+
+
 
   useEffect(() => {
     fetchMoviesHandler();

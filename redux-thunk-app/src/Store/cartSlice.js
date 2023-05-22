@@ -69,11 +69,8 @@ const cartSlice = createSlice({
   },
 });
 
-const sendCartData=(cartItems)=>{
-  return (dispatch)=>{
 
-  }
-}
+
 
 export const cartActions = cartSlice.actions;
 export default cartSlice.reducer;
