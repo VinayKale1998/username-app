@@ -1,4 +1,4 @@
-import { NavLink, useParams ,Link, useLoaderData,json, useRouteLoaderData} from "react-router-dom";
+import { NavLink, useParams ,Link, useLoaderData,json, useRouteLoaderData,redirect} from "react-router-dom";
 import EventItem from "../components/EventItem"
 
 const EventDetailPage =()=>{
@@ -32,4 +32,19 @@ export  async function eventLoader({request,params})
     }
 
     return response;
+}
+
+export async function deleteAction({request,params})
+{
+    const id = params.eventId;
+    const method= request.method;
+    const response =await fetch("http://localhost:8080/events/"+id, {method:method});
+    // if(!response.ok)
+    // {
+    //     throw json({message:'Something went wrong from eventdetail'},{status:500})
+    // }
+
+
+   return  redirect('/events')
+
 }
