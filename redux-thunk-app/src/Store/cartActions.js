@@ -70,10 +70,21 @@ export const fetchCartData=()=>{
 
         const data = await response.json();
         const cartItems = data?data:[]
-        console.log(cartItems )
+        if(typeof data!=='object')
+        {
+          dispatch(cartActions.showNotification({
+            title: "Error",
+            status: "Error",
+            message: "data fetch failed",
+          }))
+        }
+        else{
+          console.log(cartItems )
         console.log('from the API')
         dispatch(cartActions.transformCart(cartItems))
 
+        }
+        
     }
 
     getData().catch(error=>

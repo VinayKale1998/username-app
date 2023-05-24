@@ -44,7 +44,7 @@ function App() {
     }
   }
   
-  }, [cartItems,dispatch,cartItems.length]);
+  }, [cartItems,dispatch]);
 
 
   useEffect(()=>{

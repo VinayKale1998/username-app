@@ -1,14 +1,17 @@
 .header {
-  max-width: 60rem;
+  max-width:1000px;
+  width: 200rem;
   margin: auto;
   padding: 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+
 }
 
 .list {
   display: flex;
   gap: 1rem;
+  justify-content: space-between;
 }
 
 .list a {
