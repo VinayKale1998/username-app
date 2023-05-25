@@ -49,6 +49,7 @@ function App() {
         {
           path: "events",
           element: <EventsRoot></EventsRoot>,
+        
           children: [
             {
               index: true,

@@ -7,7 +7,7 @@ const EditEventPage = () => {
 
   return (
     <div>
-      <EventForm event={data.event}></EventForm>
+      <EventForm method={'patch'} event={data.event}></EventForm>
 
       <h1>
         <Link to=".." relative="path">
@@ -17,6 +17,8 @@ const EditEventPage = () => {
     </div>
   );
 };
+
+
 
 export default EditEventPage;
 
@@ -34,7 +36,7 @@ export async function action({ request,params }) {
 
   console.log(params.eventId);
    const response = await fetch('http://localhost:8080/events/'+params.eventId,{
-    method:'PUT',
+    method:request.method,
     headers:{
         'Content-Type':'application/JSON'
     }

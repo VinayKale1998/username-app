@@ -1,5 +1,5 @@
 import EventForm from "../components/EventForm";
-import { json, redirect } from "react-router-dom";
+import { json, redirect,useActionData } from "react-router-dom";
 
 const NewEventPage = () => {
   return (
@@ -14,6 +14,7 @@ export default NewEventPage;
 export async function action({ params, request }) {
   const data = await request.formData();
 
+
   const event = {
     title: data.get("title"),
     image: data.get("image"),
@@ -27,14 +28,14 @@ export async function action({ params, request }) {
     body: JSON.stringify(event),
   });
 
-  if (!response.ok) {
-    throw json({ message: "Something went wrong" }, { status: 400 });
+  if (response.status===422) {
+    return response;
   }
 
-//   else
-//   {
-//     return redirect('/events')
-//   }
+  else
+  {
+    return redirect('/events')
+  }
 
-   return redirect('/events');
+   
 }
