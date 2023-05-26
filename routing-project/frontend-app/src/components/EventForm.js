@@ -13,8 +13,7 @@ function EventForm({ method, event }) {
   }
 
   return (
-    <Form  method ={method} className={classes.form}>
-     
+    <Form  method ={method} className={classes.form}>      
       {response&&response.errors &&(<ul>
         {Object.values(response.errors).map(error=><li key={error}>{error}</li>)}
       </ul>)}
