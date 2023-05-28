@@ -1,7 +1,7 @@
 import React from "react";
-import { useFormik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import classes from "./Demo.module.css";
-import * as Yup from "yup"
+import * as Yup from "yup";
 
 const initialValues = {
   group: "",
@@ -14,7 +14,7 @@ const onSubmit = (values) => {
 
 // const validate = (values) => {
 //   let errors = {};
-  
+
 // console.log('validate')
 //   if (!values.group) {
 //     errors.group = "required";
@@ -26,7 +26,7 @@ const onSubmit = (values) => {
 
 //   if (
 //     !/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/i.test(values.email)
-//   ) 
+//   )
 //   {
 //     errors.email = "Email invalid";
 //   }
@@ -34,28 +34,26 @@ const onSubmit = (values) => {
 //   return errors;
 // }
 
+const validationSchema = Yup.object({
+  group: Yup.string().required("Group is required"),
+  email: Yup.string()
+    .email("Invalid Email Format")
+    .required("Email is required"),
+});
+function NewForm() {
 
-const validationSchema=Yup.object({
-  group:Yup.string().required('Group is required')
-,
-  email:Yup.string().email('Invalid Email Format').required('Email is required'),
-  
-})
-function Demo() {
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema,
-  });
 
-  
-  console.log('errors',formik.errors)
+  // console.log("errors", formik.errors);
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
+      <Form >
         <label htmlFor="group">New Group*</label>
         <div>
-          <input
+          <Field
             id="group"
             type="text"
             name="group"
@@ -64,31 +62,33 @@ function Demo() {
             // onChange={formik.handleChange}
             // value={formik.values.group}
             // onBlur={formik.handleBlur}
-            {...formik.getFieldProps('group')}
-          ></input>
-          <h1 className={classes.error}>
+            //refactor with formik method
+            // {...formik.getFieldProps('group')}
+            //now that we have changed the input tag to Field component , we no longer need binding
+          ></Field>
+          <ErrorMessage name="group"></ErrorMessage>
+          {/* <h1 className={classes.error}>
             {formik.errors.group&&formik.touched.group? formik.errors.group : null}
-          </h1>
+          </h1> */}
         </div>
         <div>
           <label htmlFor="email">email</label>
-          <input
+          <Field
             type="email"
             maxLength="100"
             name="email"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            
-          ></input>
-          <h1 className={classes.error}>
+        
+          ></Field>
+          <ErrorMessage name="email"></ErrorMessage>
+
+          {/* <h1 className={classes.error}>
             {formik.errors.email && formik.touched.email? formik.errors.email : null}
-          </h1>
+          </h1> */}
         </div>
         <button type="submit">Submit</button>
-      </form>
-    </div>
+      </Form>
+    </Formik>
   );
 }
 
-export default Demo;
+export default NewForm;

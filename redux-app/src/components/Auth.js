@@ -19,7 +19,7 @@ const Auth = () => {
 
   const loginHandler = (event) => {
     event.preventDefault();
-    dispatch(authActions.login());
+    dispatch(authActions.login(Credentials));
 
   };
 

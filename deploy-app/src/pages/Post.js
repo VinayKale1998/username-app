@@ -10,7 +10,9 @@ function PostPage() {
 
 export default PostPage;
 
-export function loader({ params }) {
+export async function loader({ params,request }) {
+// const data = await request.formData();
+// const methog = request.method()
   const postId = params.id;
   return fetch('https://jsonplaceholder.typicode.com/posts/' + postId);
 }

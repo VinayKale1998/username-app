@@ -8,6 +8,7 @@ const authSlice = createSlice({
         login(state){
           
           state.isLogin=1;
+   
           localStorage.setItem("loggedIn","1")
            
         },

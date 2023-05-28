@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import MainNavigation from "../Components/MainNavigation";
 import classes from "./CreateFlashCard.module.css";
 import Demo from "../Components/Demo";
+import NewForm from "../Components/Formik";
 
 const CreateFlashCard = () => {
   return (
@@ -16,8 +17,8 @@ const CreateFlashCard = () => {
 
       </div>
       <div>
-        <Demo></Demo>
-        {/* <Outlet></Outlet> */}
+        {/* <NewForm></NewForm> */}
+        <Outlet></Outlet>
       </div>
     </div>
   );
