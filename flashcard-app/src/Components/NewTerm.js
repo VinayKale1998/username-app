@@ -1,15 +1,17 @@
+import { Formik, Form, Field } from "formik";
 
-
-const NewTerm = ()=>{
-    return (
-        <div>
-        <label for='group' >Term*</label>
-          <input type="text"></input>
-          <label for='group' >Definition*</label>
-          <input type="text"></input>
-          <label for='group' >Image</label>
-          <input type="file"></input>
-        </div>
-    )
-}
+const NewTerm = () => {
+  return (
+    <div>
+      <Formik>
+        <Form>
+          <input type="text"/>
+          <input type='text'/>
+          <input type="file"/>
+          
+        </Form>
+      </Formik>
+    </div>
+  );
+};
 export default NewTerm;
