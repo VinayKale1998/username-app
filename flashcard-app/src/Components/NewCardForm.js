@@ -3,55 +3,60 @@ import classes from "./NewCardForm.module.css";
 import NewTerm from "./NewTerm";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { deckActions, termActions } from "../Store";
+import { useDispatch, useSelector } from "react-redux";
 
-const initialValues = {
-  group: "",
-  description: "",
-};
+// const initialValues = {
+//   group: "",
+//   description: "",
+// };
 
-const validationSchema = Yup.object({
-  group: Yup.string().required("Required"),
-  description: Yup.string()
-    .required("Description is required")
+// const validationSchema = Yup.object({
+//   group: Yup.string().required("Required"),
+//   description: Yup.string().required("Description is required"),
+// });
 
-});
+// const onSubmit = (values) => {
+//   console.log(values);
+// };
 
-const onSubmit = (values) => {
-  console.log(values);
-};
+// const reducer=(state,action)=>{
 
-  // const reducer=(state,action)=>{
+//   return
+// }
 
-  //   return 
-  // }
+// const initialState={
+//   group:{
 
-  // const initialState={
-  //   group:{
+//   },
+//   terms:{
+//     number:1,
+//     data:[]
 
-  //   },
-  //   terms:{
-  //     number:1,
-  //     data:[]
-
-  //   }
-  // }
-
+//   }
+// }
 
 const NewCardForm = () => {
-
-  const [deck,dispatch]= useReducer(reducer,initialState)
+  // const [deck,dispatch]= useReducer(reducer,initialState)
   const [image, setImage] = useState(null);
+  const [group, setGroup] = useState("");
+  const [description, setDescription] = useState("");
 
-  const [terms, setTerms] = useState([
-    {
-      id: "m1",
-      term: "",
-      definition: "",
-      image: "",
-    },
-  ]);
+  const terms = useSelector((state) => state.terms);
 
-  let count=1;
+  const dispatch = useDispatch();
+ 
+
+  // const [terms, setTerms] = useState([
+  //   {
+  //     id: "m1",
+  //     term: "",
+  // //     definition: "",
+  // //     image: "",
+  // //   },
+  // // ]);
+
+  // let count=1;
 
   const imageChangeHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -59,15 +64,27 @@ const NewCardForm = () => {
     }
   };
 
-  const termAddHandler = () => {
-    ++count;
-
-    setTerms((prevState) => [
- 
-      ...prevState,
-      { id: `m${count}`, term: "", definition: "", image: "" },
-    ]);
+  const groupChangeHandler = (event) => {
+    setGroup(event.target.value);
   };
+  const descriptionChangeHandler = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const deckAddHandler = (event) => {
+    event.preventDefault();
+    dispatch(deckActions.deckDetailsAdd({
+      deckName:group,
+      description:description,
+      image:image,
+      terms:terms
+     }));
+  };
+  console.log()
+  const termAddHandler=()=>{
+    dispatch(termActions.addTerm())
+
+  }
 
   const imageDeleteHandler = () => {
     setImage(null);
@@ -76,22 +93,28 @@ const NewCardForm = () => {
   return (
     <React.Fragment>
       <div>
-        <Formik
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-          initialValues={initialValues}
-        >
+        <Formik>
           <Form>
-            <label for="group">New Group*</label>
-            <Field
+            <label htmlFor="group">New Group*</label>
+            <input
               id="group"
               type="text"
               maxLength="20"
               placeholder="Enter New Group Name"
               name="group"
-            ></Field>
-            <ErrorMessage name="group"></ErrorMessage>
-            <label for="group"> Image</label>
+              onChange={groupChangeHandler}
+            ></input>
+
+            <label htmlFor="group">Description</label>
+            <textarea
+              type="textArea"
+              maxLength="101"
+              name="description"
+              onChange={descriptionChangeHandler}
+            ></textarea>
+
+
+            <label htmlFor="group"> Image</label>
 
             <input
               className={classes.fileInput}
@@ -117,31 +140,25 @@ const NewCardForm = () => {
                 onChange={imageChangeHandler}
               ></input>
             )}
-            <label for="group">Description</label>
-            <Field
-              type="text"
-              as="textarea"
-              maxLength="101"
-              name="description"
-            ></Field>
-            <ErrorMessage name="description"></ErrorMessage>
-
-            
           </Form>
         </Formik>
       </div>
       <div>
-       {
-        <ul>
-          {terms.map(term=> <li><NewTerm term={term} key={term.id}></NewTerm></li>)}
-        </ul>
-       }
+        {
+          <ul>
+            {terms.map((term) => (
+              <li key={term.id}>
+                <NewTerm group={group} id={term.id} term={term}></NewTerm>
+              </li>
+            ))}
+          </ul>
+        }
         <button type="button" onClick={termAddHandler}>
           Add more
         </button>
       </div>
 
-      <button type="submit">create</button>
+     { <button type="submit" disabled={!terms.length>0} onClick={deckAddHandler}>create</button>} 
     </React.Fragment>
   );
 };

@@ -1,94 +1,81 @@
-import React from "react";
-import { useFormik } from "formik";
-import classes from "./Demo.module.css";
-import * as Yup from "yup"
+import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
+import { TextField } from "formik-material-ui";
+import { Grid, Card, Button, CircularProgress } from "@mui/material";
+import { object,string, number, boolean } from "yup";
 
 const initialValues = {
-  group: "",
-  email: "",
+  DeckName: "",
+  DeckDescription: "",
+  Terms: [],
 };
 
-const onSubmit = (values) => {
-  console.log(values);
-};
-
-// const validate = (values) => {
-//   let errors = {};
-  
-// console.log('validate')
-//   if (!values.group) {
-//     errors.group = "required";
-//   }
-
-//   if (!values.email) {
-//     errors.email = "required";
-//   }
-
-//   if (
-//     !/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/i.test(values.email)
-//   ) 
-//   {
-//     errors.email = "Email invalid";
-//   }
-
-//   return errors;
-// }
-
-
-const validationSchema=Yup.object({
-  group:Yup.string().required('Group is required')
-,
-  email:Yup.string().email('Invalid Email Format').required('Email is required'),
-  
-})
-function Demo() {
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema,
-  });
-
-  
-  console.log('errors',formik.errors)
+const Demo = () => {
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="group">New Group*</label>
-        <div>
-          <input
-            id="group"
-            type="text"
-            name="group"
-            maxLength="20"
-            placeholder="Enter New Group Name"
-            // onChange={formik.handleChange}
-            // value={formik.values.group}
-            // onBlur={formik.handleBlur}
-            {...formik.getFieldProps('group')}
-          ></input>
-          <h1 className={classes.error}>
-            {formik.errors.group&&formik.touched.group? formik.errors.group : null}
-          </h1>
-        </div>
-        <div>
-          <label htmlFor="email">email</label>
-          <input
-            type="email"
-            maxLength="100"
-            name="email"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            
-          ></input>
-          <h1 className={classes.error}>
-            {formik.errors.email && formik.touched.email? formik.errors.email : null}
-          </h1>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={async (values) => {
+        console.log("my values", values);
+        return new Promise((res) => setTimeout(res, 2500));
+      }}
+      validationSchema={object({
+        DeckName: string().required('This Field is required').min(2,'DeckName needs to be atleast 2 chars').max(15,'DeckName needs to less than 15 chars'),
+        DeckDescription: string().required('This Field is required').min(2).max(100),
+       
+      })}
+    >
+      {({ values, errors, isSubmitting }) => (
+        <Form autoComplete="false">
+          <Grid container direction="column" spacing={2}>
+            <Grid item>
+              <Field
+                fullwidth
+                name="DeckName"
+                required
+                type="text"
+                component={TextField}
+                label="Deck Name"
+              ></Field>
+            </Grid>
+            <Grid item>
+              <Field
+                required
+                fullwidth
+                name="DeckDescription"
+                type="text"
+                label="Description"
+                component={TextField}
+              ></Field>
+            </Grid>
+
+            <Grid item>
+              <Field
+                required
+                fullwidth
+                name="Terms"
+                component={TextField}
+                label="Terms"
+              ></Field>
+            </Grid>
+            <Grid item>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isSubmitting}
+                startIcon={
+                  isSubmitting ? <CircularProgress size="0.9rem" /> : undefined
+                }
+              >
+                Submit
+              </Button>
+            </Grid>
+
+            <pre>{JSON.stringify({ values, errors }, null, 4)}</pre>
+          </Grid>
+        </Form>
+      )}
+    </Formik>
   );
-}
+};
 
 export default Demo;

@@ -17,8 +17,9 @@ const CreateFlashCard = () => {
 
       </div>
       <div>
+        <Demo></Demo>
         {/* <NewForm></NewForm> */}
-        <Outlet></Outlet>
+        {/* <Outlet></Outlet> */}
       </div>
     </div>
   );
