@@ -32,30 +32,27 @@ const CreateFlashCard = () => {
         </nav> */}
       </div>
       <div className="body bg-gray-200 flex w-full">
-    {/* section */}
-    <section className="main mt-10 mx-36 w-9/12 ">
-      {/* heading */}
-      <div className="heading">
-        <h1 className="text-black font-bold text-4xl">Create Flash Card</h1>
-      </div>
-      {/* Nav buttons */}
-      <div className="buttons flex w-100 mt-5 mx-2 space-x-8 mb-2">
-        <button className="rounded-md w-fit  hover:bg-purple-700 hover:text-white">
-          Create New
-        </button>
+        {/* section */}
+        <section className="main mt-10 mx-36 w-9/12 ">
+          {/* heading */}
+          <div className="heading">
+            <h1 className="text-black font-bold text-4xl">Create Flash Card</h1>
+          </div>
+          {/* Nav buttons */}
+          <div className="buttons flex w-100 mt-5 mx-2 space-x-8 mb-2">
+            <button className="rounded-md w-fit  hover:bg-purple-700 hover:text-white">
+              Create New
+            </button>
 
-        <button className="rounded-md  w-fit   hover:bg-purple-700 hover:text-white ">
-          My FlashCard
-        </button>
+            <button className="rounded-md  w-fit   hover:bg-purple-700 hover:text-white ">
+              My FlashCard
+            </button>
+          </div>
+          {/* First Form */}
+          <GroupForm></GroupForm>
+        </section>
       </div>
-      {/* First Form */}
-    <GroupForm></GroupForm>
-
-    </section>
-  </div>
-     
     </div>
-   
   );
 };
 
