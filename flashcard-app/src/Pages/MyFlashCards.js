@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import classes from "./MyFlashCard.module.css"
+
 import React from "react";
 
 const MyFlashCards = () => {

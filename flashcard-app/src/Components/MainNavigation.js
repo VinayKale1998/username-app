@@ -3,18 +3,18 @@ import classes from "./MainNavigation.module.css";
 
 const MainNavigation = () => {
   return (
-    <div className={classes.nav}>
+    <div >
       <nav>
         <NavLink
           to="/"
-          className={({ isActive }) => (isActive ? classes.active : "")}
+          className={({ isActive }) => (isActive ? "" : "")}
         >
           Create New
         </NavLink>
 
         <NavLink
           to="/MyFlashCards"
-          className={({ isActive }) => (isActive ? classes.active : "")}
+          className={({ isActive }) => (isActive ?"" : "")}
         >
           My FlashCards
         </NavLink>
