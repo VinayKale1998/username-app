@@ -12,9 +12,9 @@ import Group_Form from "../Components/GroupForm copy";
 const CreateFlashCard = () => {
   return (
     <div>
-      <div className="bg-blue-600 flex  items-center justify-between">
+      <div className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 flex  items-center justify-between h-16 ">
         <a href="/">
-          <span className="text-white font-extrabold text-4xl pl-8 hover:bg-gray-700 pr-8 px-2 rounded-md">
+          <span className="text-white font-extrabold text-4xl pl-8 pr-8 px-2 rounded-md">
             {" "}
             FlashKing
           </span>
@@ -33,20 +33,20 @@ const CreateFlashCard = () => {
           </ul>
         </nav> */}
       </div>
-      <div className="body bg-gray-200 flex w-full">
+      <div className="body  bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 flex w-full flex-row">
     {/* section */}
-    <section className="main mt-10 mx-36 w-9/12 ">
+    <section className="main mt-3 mx-36 w-9/12 flex flex-col">
       {/* heading */}
-      <div className="heading">
-        <h1 className="text-black font-bold text-4xl">Create Flash Card</h1>
+      <div className="heading ml-[32%] ">
+        <h1 className="t font-bold text-4xl text-indigo-900">Create Flash Card</h1>
       </div>
       {/* Nav buttons */}
       <div className="buttons flex w-100 mt-5 mx-2 space-x-8 mb-2">
-        <button className="rounded-md w-fit  hover:bg-purple-700 hover:text-white">
+        <button className="rounded-md w-fit  hover:bg-purple-700 hover:text-white  font-bold text-2xl  border-b-orange-500 outline-none">
           Create New
         </button>
 
-        <button className="rounded-md  w-fit   hover:bg-purple-700 hover:text-white ">
+        <button className="rounded-md  w-fit   hover:bg-purple-700 hover:text-white  font-bold text-2xl ">
           My FlashCard
         </button>
       </div>

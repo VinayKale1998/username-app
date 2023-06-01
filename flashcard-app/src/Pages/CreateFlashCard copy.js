@@ -31,7 +31,7 @@ const CreateFlashCard = () => {
           </ul>
         </nav>
       </div>
-      <div className="body bg-gray-200 flex w-full">
+      <div className="body bg-red-300 flex w-full">
         {/* section */}
         <section className="main mt-10 mx-36 w-9/12 ">
           {/* heading */}

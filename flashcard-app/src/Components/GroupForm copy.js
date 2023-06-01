@@ -1,15 +1,16 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import TermForm from "./TermForm";
 import { Formik, Field, ErrorMessage, Form, FieldArray } from "formik";
 import { string, array, object } from "yup";
-import InputComp from "./InputComp";
-import TextComp from "./TextComp";
+
 import { Button, Input } from "@mui/material";
 import { TextField } from "formik-material-ui";
 import PreviewImage from "./PreviewImage";
 import { BiEdit } from "react-icons/bi";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Error from "./Error";
+import "./CSS/GroupForm.css";
 
 const theme = createTheme({
   palette: {
@@ -44,12 +45,10 @@ function Group_Form() {
       validationSchema={object({
         Group: string()
           .required("This Field is required")
-          .min(2, "DeckName needs to be atleast 2 chars")
-          .max(15, "DeckName needs to less than 15 chars"),
-        Description: string()
-          .required("This Field is required")
-          .min(2)
-          .max(100),
+          .min(2, "Group Name needs to be atleast 4 characters")
+          .max(15, "Group name must be of less than 15 chars"),
+        Description: string(),
+          
         Terms: array(
           object({
             Term: string()
@@ -68,28 +67,34 @@ function Group_Form() {
       })}
     >
       {({ values, errors, isSubmitting, setFieldValue }) => (
+        <div>
         <Form>
-          <div className=" firstform flex flex-col items-center mx-2 rounded-xl my-3 px-3 py-4 bg-white">
-            <div className="flex flex-row items-center justify-start space-y-2 mx-2 rounded-md  px-1 py-4 w-full  ">
-              <div className=" w-4/12">
-                <label htmlFor="Group" className="mx-4 my-2 h-10 w-9/12">
-                  Create Group
+          <div className=" firstform flex flex-col items-center mx-2  my-3 px-3 py-4 bg-white w-full">
+            <div className="flex flex-row  justify-start space-y-2 mx-2 rounded-md  px-1 py-1 w-full  ">
+              <div className=" w-4/12 flex flex-col space-y-0  ">
+                <label htmlFor="Group" className="mx-4  font-bold mt-0  mb-0 h-10 w-9/12">
+                  Create Group <span className="text-red-700  font-bold">*</span>
                 </label>
-                <br></br>
 
                 {/* Group */}
                 <Field
-                  className="rounded-md bg-white border border-gray-500 mx-4 my-2 h-10 w-11/12  hover:bg-blue-50 hover:border-blue-600"
-                  placeholder="Group"
+                  className={` bg-white border border-gray-500 mx-4 mb-2  h-10  focus:bg-gray-100 w-11/12 mt-9 focus:outline  focus:outline-blue-500 hover:bg-blue-50 hover:border-blue-600`}
+                  placeholder=" Enter Group Name"
                   id="Group"
                   name="Group"
                 ></Field>
+
+                <ErrorMessage
+                  className="mx-4 my-2 h-5 w-9/12 text-red-600"
+                  component={Error}
+                  name="Group"
+                ></ErrorMessage>
               </div>
+
               {/* button */}
-              <div className=" w-5/12 pt-3">
+              <div className="  w-4/12 flex flex-col space-y-0 ">
                 <button
-                  className="rounded-md mx-3 my-4 border border-black w-52 h-10 mr-48  hover:border-blue-600 bg-blue-500 "
-                  variant="contained"
+                  className=" mx-3 mb-3 border text-white border-black w-52 h-10 mr-48 mt-8  hover:border-blue-600 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 "
                   placeholder="Upload"
                 >
                   Upload
@@ -97,17 +102,24 @@ function Group_Form() {
               </div>
             </div>
 
-            <div className="flex flex-col space-y-2 mx-2 rounded-md  px-1 py-1 w-full  ">
-              <label htmlFor="Description" className="mx-4 my-1 w-4/6">
+            <div className="flex flex-col space-y-2 mx-2   px-1 py-1 w-full  ">
+              <label htmlFor="Description" className="mx-4 my-1 w-5/6 font-bold">
                 Add Description
               </label>
+              {/* description */}
               <Field
-                className="rounded-md bg-white border-5 mx-4 my-4 w-4/6 h-28  border-gray-500 border focus:border focus:border-blue-600 hover:bg-blue-50 hover:border hover:border-blue-600"
+                className=" mx-4  my-4 w-4/6 h-20 min-h-[80%] focus:bg-gray-100"
+                
                 as="textarea"
-                placeholder="Description"
+                placeholder="Enter Description"
                 id="Description"
                 name="Description"
               ></Field>
+              <ErrorMessage
+                className="mx-4 my-2 h-5 w-9/12 text-red-600"
+                component={Error}
+                name="Description"
+              ></ErrorMessage>
 
               <input
                 hidden
@@ -116,45 +128,118 @@ function Group_Form() {
               ></input>
             </div>
           </div>
-          ;{/* second Form */}
-          <div className=" firstform flex flex-col space-y-5 mx-2  rounded-xl my-5 px-3 py-4  bg-white">
+          {/* second Form */}
+          <div className=" firstform flex flex-col space-y-5 mx-2  my-4 px-3 py-0  bg-white w-full">
             {/* fieldarray */}
             <FieldArray name="Terms">
               {({ push, remove }) => (
-                <div className="w-full">
+                <div className="w-full ">
                   {values.Terms.map((item, index) => (
-                    <div className="flex flex-row justify-start space-y-2 mx-2 py-15 items-center h-32 px-1  rounded-md ">
-                      <button className="w-9 bg-blue-500 h-9 rounded-3xl"> 
-                      {index+1}
+                    <div
+                      key={index}
+                      className="flex  flex-row justify-start space-y-1 ml-2   items-center h-40   rounded-md  mb-10 "
+                    >
+                      <button className="w-10 min-w-[4%] mt-4 bg-gradient-to-r  text-white from-slate-900 via-purple-900 to-slate-900 h-10 min-h[4%] rounded-3xl">
+                        {index + 1}
                       </button>
+
+
                       {/* TErm */}
-                      <Field name={`Terms[${index}].Term`}>
-                        {({ field, form, meta }) => (
-                          <input
-                            {...field}
-                            className="rounded-md bg-white border mx-4 my-2 h-10 w-4/12 min-w-[33.33%]  max-w-[33.33%]  border-gray-500   hover:border-blue-600"
-                            ref={(element) =>
-                              (focusRefs.current[index] = element)
-                            }
-                            placeholder="Enter Term"
-                            label="Term Name"
-                            type="text"
-                          ></input>
-                        )}
-                      </Field>
+                      <div className="flex flex-col  mt-0 h-32 mr-0 pr-0 w-5/5 pt-1 ">
+                        <label
+                          htmlFor="Description"
+                          className="mx-4  w-5/6 mt-6  font-bold "
+                        >
+                          Term<span className="text-red-700  font-bold">*</span>
+                        </label>
+
+                        <Field name={`Terms[${index}].Term`}>
+                          {({ field, form, meta }) => (
+                            <input
+                              {...field}
+                              className=" bg-white border  mt-1 ml-2   min-h-[34%] w-96 min-w-[90%] focus:bg-gray-100 focus:outline focus:outline-blue-500   max-w-[33.33%]  border-gray-500   hover:border-blue-600"
+                              ref={(element) =>
+                                (focusRefs.current[index] = element)
+                              }
+                              placeholder="Enter Term"
+                              label="Term Name"
+                              type="text"
+                            ></input>
+                          )}
+                        </Field>
+                        <ErrorMessage
+                          className="mx-4 my-2 h-5 w-9/12 text-red-600"
+                          component={Error}
+                          name={`Terms[${index}].Term`}
+                        ></ErrorMessage>
+                      </div>
+
 
                       {/* Definiton */}
-                      <Field
-                        className="  rounded-md bg-white border border-gray-500  mx-4 my-3 h-10 w-10/12 min-w-[40.33%] max-w-[40.33%]   hover:border-blue-600  "
-                        placeholder="Enter Definiton "
-                        name={`Terms[${index}].definition`}
-                      ></Field>
+                      <div className="flex flex-col  h-32 mr-2 pr-0 pt-1 w-5/12  ">
+                      <label
+                          htmlFor="Definition"
+                          className="mx-4  w-5/6 mt-6  font-bold"
+                        >
+                          Definition<span className="text-red-700  font-bold">*</span>
+                        </label>
+                        <Field
+                         
+                          as="textarea"
+                          className="  mx-4 mt-1 h-40 min-h-[60%]   min-w-[90%]  max-w-[33.33%]  focus:bg-gray-100 "
+                          placeholder="Enter Definiton "
+                          name={`Terms[${index}].definition`}
+                        ></Field>
+                        <ErrorMessage
+                          className="mx-4 my-2 h-5 w-9/12 text-red-600"
+                          component={Error}
+                          name={`Terms[${index}].definition`}
+                        ></ErrorMessage>
+                      </div>
+
+
+                      <div className="flex flex-col  h-32 pr-0 pt-1 mt-96 mr-4 ">
+                        {/* edit */}
+                        {values.Terms[index].definition &&
+                          values.Terms[index].Term &&
+                          values.Terms[index].image && (
+                            <button
+                             className="mt-12 mb-4"
+                              disabled={isSubmitting}
+                              onClick={() => {
+                                focusRefs.current[index].focus();
+                              }}
+                            >
+                              <BiEdit size={30} color="#0033ff"></BiEdit>
+                            </button>
+                          )}
+
+                        {/* delete */}
+                        {values.Terms.length > 1 && (
+                          <button
+                            className={`${(values.Terms[index].definition &&
+                              values.Terms[index].Term &&
+                              values.Terms[index].image)?"":'mt-16'}`}
+                            variant="contained"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                              remove(index);
+                              // refs.current.splice(index, index + 1);
+                            }}
+                          >
+                            <ThemeProvider theme={theme}>
+                              <DeleteIcon color="primary" ></DeleteIcon>
+                            </ThemeProvider>
+                          </button>
+                        )}
+                      </div>
 
                       {/* upload or image */}
+                      <div className="flex flex-row items-center"> 
                       <button
-                        className={`rounded-md mx-3 my-5 ${
+                        className={` mr-3 mt-[40%] ${
                           values.Terms[index].image ? "" : "border"
-                        } border-black w-14 min-w-[10%] h-10   hover:border-blue-600 bg-blue-500`}
+                        } border-black w-20 min-w-[10%] h-10   hover:border-blue-600 text-white bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 `}
                         disabled={isSubmitting}
                         onClick={() => {
                           fileRefs.current[index].click();
@@ -169,40 +254,10 @@ function Group_Form() {
                           "Upload"
                         )}
                       </button>
-
-                      <div className="flex flex-col space-y-2">
-                        {/* edit */}
-                        {values.Terms[index].definition &&
-                          values.Terms[index].Term &&
-                          values.Terms[index].image && (
-                            <button
-                              variant="contained"
-                              disabled={isSubmitting}
-                              onClick={() => {
-                                focusRefs.current[index].focus();
-                              }}
-                            >
-                              <BiEdit size={30} color="#0033ff"></BiEdit>
-                            </button>
-                          )}
-
-                        {/* delete */}
-                        {values.Terms.length > 1 && (
-                          <button
-                            // className="rounded-md mx-3 my-4 border-2 border-black w-2/12 h-10 mr-48"
-                            variant="contained"
-                            disabled={isSubmitting}
-                            onClick={() => {
-                              remove(index);
-                              // refs.current.splice(index, index + 1);
-                            }}
-                          >
-                            <ThemeProvider theme={theme}>
-                              <DeleteIcon color="primary"></DeleteIcon>
-                            </ThemeProvider>
-                          </button>
-                        )}
+                      
                       </div>
+
+                      
 
                       {/* fileinput */}
                       <input
@@ -221,22 +276,31 @@ function Group_Form() {
                     </div>
                   ))}
                   <button
+                    className="text-white mx-20 text-xl bg-gradient-to-r   from-slate-900 via-purple-900 to-slate-900 rounded-lg w-44 h-10"
                     disabled={isSubmitting}
                     onClick={() => {
                       push({ Term: "", definition: "", image: "" });
                     }}
                   >
-                    + Add More
+                    + Add More...
                   </button>
                 </div>
               )}
             </FieldArray>
             <div className="flex flex-row  space-y-2 mx-2 items-center  px-1  rounded-md just"></div>
-            <pre>{JSON.stringify({ values, errors }, null, 4)}</pre>
+            {/* <pre>{JSON.stringify({ values, errors }, null, 4)}</pre> */}
           </div>
-          ;
+          
         </Form>
-      )}
+        <div className="flex flex-row items-center justify-center mb-96">
+        <button type='submit' className="w-44 h-12 text-white text-2xl bg-indigo-400  ml-90">Submit</button>
+        </div>
+        </div>
+       
+      )
+      
+      }
+
     </Formik>
   );
 }
