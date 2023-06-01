@@ -29,7 +29,7 @@ const initialValues = {
 
 const Demo = () => {
   const refs = useRef([]);
-  const ref = useRef();
+
   const focusRefs = useRef([]);
 
   // const addToRefs = (element) => {
@@ -110,7 +110,37 @@ const Demo = () => {
                             key={index}
                           >
                             <Grid item xs={12} sm="auto">
-                              <input
+                              <Field name={`Terms[${index}].term`}>
+                                {
+                                  ({field,form,meta})=>(
+                                    <input
+                                    {...field}
+                                    className="rounded-md bg-white border-2 mx-4 my-2 h-10 w-11/12  border-black"
+                                     ref={(element) =>
+                                       (focusRefs.current[index] = element)
+                                     }
+                                     label="Term Name"
+                                     onBlur={() => {
+                                       setFieldError(
+                                         `Terms[${index}].term`,
+                                         "Field is required"
+                                       );
+                                     }}
+                                     type="text"
+                                     onChange={(event) => {
+                                       setFieldValue(
+                                         `Terms[${index}].term`,
+                                         event.target.value
+                                       );
+                                     }}
+                                   ></input>
+                                  )
+                                }
+                              </Field>
+
+
+                              {/* <input
+                               className="rounded-md bg-white border-2 mx-4 my-2 h-10 w-11/12  border-black"
                                 ref={(element) =>
                                   (focusRefs.current[index] = element)
                                 }
@@ -128,7 +158,7 @@ const Demo = () => {
                                     event.target.value
                                   );
                                 }}
-                              ></input>
+                              ></input> */}
                             </Grid>
                             <Grid item xs={12} sm="auto">
                               <Field
@@ -154,7 +184,7 @@ const Demo = () => {
                                   );
                                 }}
                               ></input>
-                              <img src={values.Terms[index].image}></img>
+                             
                             </Grid>
 
                             <Grid item xs={12} sm="auto">

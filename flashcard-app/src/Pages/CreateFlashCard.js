@@ -7,10 +7,12 @@ import { Form } from "formik";
 import MyForm from "../Components/Form";
 import GroupForm from "../Components/GroupForm";
 
+import Group_Form from "../Components/GroupForm copy";
+
 const CreateFlashCard = () => {
   return (
     <div>
-      <div className="bg-purple-600 flex  items-center justify-between">
+      <div className="bg-blue-600 flex  items-center justify-between">
         <a href="/">
           <span className="text-white font-extrabold text-4xl pl-8 hover:bg-gray-700 pr-8 px-2 rounded-md">
             {" "}
@@ -49,7 +51,7 @@ const CreateFlashCard = () => {
         </button>
       </div>
       {/* First Form */}
-    <GroupForm></GroupForm>
+    <Group_Form></Group_Form>
 
     </section>
   </div>

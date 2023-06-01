@@ -2,10 +2,10 @@
 
 import React from 'react'
 
-const InputComp=  (()=> {
+const InputComp=  (({className,id,placeholder,name})=> {
   return (
     
-       <input placeholder='Input COmp'></input>
+       <input className={className} placeholder={placeholder} id={id} name={name}></input>
   )
 }
 )

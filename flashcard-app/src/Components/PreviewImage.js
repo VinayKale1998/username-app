@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import React from 'react'
 
-function PreviewImage({file}) {
+function PreviewImage({file,className}) {
 
     const [preview,setPreview]= React.useState(null)
 
@@ -14,7 +14,7 @@ function PreviewImage({file}) {
     }
   return (
     <div>
-        {preview?<img src={preview} alt='Preview' width='100px' height='100px'></img>:<Typography  variant="body1">Loading...</Typography>}
+        {preview?<img src={preview}  className ={className} alt='Preview' ></img>:<Typography  variant="body1">Loading...</Typography>}
     </div>
   )
 }
