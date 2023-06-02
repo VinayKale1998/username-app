@@ -39,7 +39,7 @@ const termsSlice= createSlice({
                 image:''
         
             })
-
+            
             
 
 

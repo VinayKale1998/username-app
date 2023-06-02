@@ -14,7 +14,7 @@ function PreviewImage({file,className}) {
     }
   return (
     <div>
-        {preview?<img src={preview}  className ={className} alt='Preview' ></img>:<Typography  variant="body1">Loading...</Typography>}
+        {preview?<img src={preview}  className ={className} alt='Preview' ></img>:<Typography  >Loading...</Typography>}
     </div>
   )
 }

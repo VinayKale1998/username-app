@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet,NavLink } from "react-router-dom";
 import MainNavigation from "../Components/MainNavigation";
 
 import Demo from "../Components/Demo";
@@ -13,12 +13,12 @@ const CreateFlashCard = () => {
   return (
     <div>
       <div className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 flex  items-center justify-between h-16 ">
-        <a href="/">
+        <NavLink to="/">
           <span className="text-white font-extrabold text-4xl pl-8 pr-8 px-2 rounded-md">
             {" "}
             FlashKing
           </span>
-        </a>
+        </NavLink>
         {/* <nav>
           <ul className="flex space-x-16 mr-20 ">
             <li className="cursor-pointer border border-purple-300 px-4  py-4 w-20 bg- place-self-end rounded-md hover:bg-white  hover:text-purple-900 text-white">
@@ -35,23 +35,24 @@ const CreateFlashCard = () => {
       </div>
       <div className="body  bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 flex w-full flex-row">
     {/* section */}
-    <section className="main mt-3 mx-36 w-9/12 flex flex-col">
+    <section className="main mt-1 mx-36 w-9/12 flex flex-col">
       {/* heading */}
       <div className="heading ml-[32%] ">
         <h1 className="t font-bold text-4xl text-indigo-900">Create Flash Card</h1>
       </div>
       {/* Nav buttons */}
-      <div className="buttons flex w-100 mt-5 mx-2 space-x-8 mb-2">
-        <button className="rounded-md w-fit  hover:bg-purple-700 hover:text-white  font-bold text-2xl  border-b-orange-500 outline-none">
+      <div className="buttons flex w-100  mt-2 space-x-10 mb-2">
+        <NavLink to='/'  className={ ({isActive})=>isActive?` text-white border-purple-900 border-4 outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-2 font-bold text-2xl bg-red-400 `: `rounded-md w-fit  hover:text-white  font-bold text-2xl  border-b-orange-500 outline-none`}>
           Create New
-        </button>
+        </NavLink>
 
-        <button className="rounded-md  w-fit   hover:bg-purple-700 hover:text-white  font-bold text-2xl ">
+        <NavLink  to='/MyFlashCards'className={ ({isActive})=>isActive?` text-white border-purple-900 border-4 outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-2 font-bold text-2xl bg-red-400 `: `rounded-md w-fit  hover:text-white  font-bold text-2xl  border-b-orange-500 outline-none`}>
           My FlashCard
-        </button>
+        </NavLink>
       </div>
       {/* First Form */}
-    <Group_Form></Group_Form>
+    {/* <Group_Form></Group_Form> */}
+    <Outlet></Outlet>
 
     </section>
   </div>

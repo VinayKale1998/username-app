@@ -49,7 +49,7 @@ const CreateFlashCard = () => {
             </button>
           </div>
           {/* First Form */}
-          <Group_Form></Group_Form>
+         {/* <Outlet></Outlet> */}
         </section>
       </div>
     </div>
