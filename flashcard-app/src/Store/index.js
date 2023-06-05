@@ -1,74 +1,42 @@
-import { createSlice,configureStore } from "@reduxjs/toolkit";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-
+// localStorage.setItem('Decks','[]')
 
 const deckSlice = createSlice({
   name: "deckSlice",
   initialState: [],
   reducers: {
-    deckDetailsAdd(state,action) {
-        console.log(action.payload)
-     state.push(action.payload)
-        
+    deckDetailsAdd(state, action) {
+      console.log(action.payload);
+      state.push(action.payload);
     },
-    
+
+    add() {},
+    subtract() {},
   },
-})
+});
 
-let count=1;
-const termsSlice= createSlice({
-
-    name:'terms',
-    initialState:[ {
-        id:`m${count}`,
-        term:'',
-        definition:'',
-        image:'',
-        group:''
-
-    }],
-    reducers:{
+let count = 1;
+const termsSlice = createSlice({
+  name: "terms",
+  initialState: [],
+  reducers: {
+    addDeck(state, action) {
+      console.log(action.payload);
+      console.log('reducer')
+        // const Decks=JSON.parse(localStorage.getItem('Decks'))
+        // const newDecks=[...Decks,action.payload]
+        // localStorage.setItem('Decks',newDecks)
         
-        addTerm(state)
-        {
-            ++count;
-           state.push({
-                id:`m${count}`,
-                term:'',
-                definition:'',
-                image:''
-        
-            })
-            
-            
+      state.push(action.payload);
+      console.log(state);
+    },
+  },
+});
 
-
-
-        },
-        changeHandler(state,action)
-        {
-            if(action.payload.id)
-            { const index= state.findIndex(item=> item.id==action.payload.id)  
-            state[index]={
-                id:state[index].id,
-                term:action.payload.term,
-                definition:action.payload.definition,
-                image:action.payload.image
-                
-            }
-            }
-            else 
-            return state;
-       
-            
-        }
-    }
-})
-
-const store =configureStore({reducer: {deck:deckSlice.reducer,terms:termsSlice.reducer}})
+const store = configureStore({ reducer: { deck: termsSlice.reducer } });
 
 export default store;
 
 export const deckActions = deckSlice.actions;
-export const termActions= termsSlice.actions;
- 
+export const termActions = termsSlice.actions;

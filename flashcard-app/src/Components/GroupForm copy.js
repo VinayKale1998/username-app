@@ -1,19 +1,20 @@
 import React, { useRef, useState } from "react";
 import TermForm from "./TermForm";
 import { Formik, Field, ErrorMessage, Form, FieldArray } from "formik";
-import { string, array, object} from "yup";
+import * as Yup from "yup";
 
 import { Button, Input } from "@mui/material";
 import { TextField } from "formik-material-ui";
 import PreviewImage from "./PreviewImage";
-import { BiEdit } from "react-icons/bi";
+import { BiEdit} from "react-icons/bi";
+import { FiUpload} from "react-icons/fi";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Error from "./Error";
 import "./CSS/GroupForm.css";
 import deckActions from "../Store/index";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { termActions } from "../Store/index";
 const theme = createTheme({
   palette: {
     primary: {
@@ -30,55 +31,53 @@ const theme = createTheme({
 const initialState = {
   Group: "",
   Description: "",
-  deckImage:null,
+  deckImage: null,
   Terms: [{ Term: "", definition: "", image: null }],
 };
 
 function Group_Form() {
   const fileRefs = useRef([]);
   const focusRefs = useRef([]);
-  const deckRef= useRef()
+  const deckRef = useRef();
   const dispatch = useDispatch();
+  const terms = useSelector((state) => state.terms);
 
   return (
     <Formik
       initialValues={initialState}
-      onSubmit={(values,errors) => {
+      onSubmit={(values, {resetForm}) => {
         //sending submitted data to the redux store
-        console.log(values);
-        console.log(typeof values.deckImage);
-        dispatch(deckActions.deckDetailsAdd({ id: null }));
+        console.log("from submit", values);
+        dispatch(termActions.addDeck(values));
+        resetForm({values:''})
       }}
-      validationSchema={object({
-        Group: string()
+      validationSchema={Yup.object({
+        Group: Yup.string()
           .required("This Field is required")
           .min(2, "Group Name needs to be atleast 4 characters")
           .max(15, "Group name must be of less than 15 chars"),
-        Description: string(),
-        deckImage: string().notRequired()
-,
-        Terms: array(
-          object({
-            Term: string()
+        Description: Yup.string(),
+        
+        Terms: Yup.array(
+          Yup.object({
+            Term: Yup.string()
               .required("TermName is required")
               .min(3, "Term must contain 3 chars at minimum")
               .max(8, "Term cannot contain more than 8 characters"),
-            definition: string()
+            definition: Yup.string()
               .required("Term Description is required")
-              .min(5, "Term must contain 5 chars at  minimum")
-              .max(100, "Term must contain 100 chars at minimum"),
-             
+              .min(1, "Term must contain 5 chars at  minimum")
+              .max(300, "Term must contain 300 chars at max"),
           })
         )
           .min(1)
           .max(10, "too many elements"),
-         
       })}
     >
       {({ values, errors, isSubmitting, setFieldValue }) => (
         <div>
           <Form>
-            <div className=" firstform flex flex-col items-center mx-2  my-3 px-3 py-4 bg-white ">
+            <div className=" firstform flex flex-col items-center mx-2  my-0 px-3 py-4 bg-white ">
               <div className="flex flex-row  justify-start space-y-2 mx-2 rounded-md  px-1 py-1 w-full  ">
                 <div className=" w-4/12 flex flex-col space-y-0  ">
                   <label
@@ -105,27 +104,28 @@ function Group_Form() {
 
                 {/* deckImage button */}
                 <div className=" w-4/12 flex flex-col space-y-0 ml-6">
-                          <button
-                            className={`  ${
-                               values.deckImage? "mt-[1%] w-32 h-28 rounded-md" 
-                                : "border mt-8 mb-3  text-white border-black w-52 h-10 mr-48  hover:border-blue-600 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900"
-                            }   `}
-                            disabled={isSubmitting}
-                            type="button"
-                            onClick={() => {
-                              deckRef.current.click();
-                            }}
-                          >
-                            {values.deckImage ? (
-                              <PreviewImage
-                                className="w-20 h-20 rounded-md"
-                                file={values.deckImage}
-                              />
-                            ) : (
-                              "Upload"
-                            )}
-                          </button>
-                        </div>
+                  <button
+                    className={`  ${
+                      values.deckImage
+                        ? " w-32 h-28 rounded-md border-2 border-purple-800"
+                        : "border mt-8 mb-3  text-white border-black w-36 h-10 mr-48  hover:border-blue-600 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900"
+                    }   `}
+                    disabled={isSubmitting}
+                    type="button"
+                    onClick={() => {
+                      deckRef.current.click();
+                    }}
+                  >
+                    {values.deckImage ? (
+                      <PreviewImage
+                        className=" w-32 h-24 rounded-md"
+                        file={values.deckImage}
+                      />
+                    ) : (
+                      <span className="flex items-center space-x-3 px-5 "><FiUpload size={20} color="white"></FiUpload> <span>Upload</span></span>
+                    )}
+                  </button>
+                </div>
                 {/* <div className="  w-4/12 flex flex-col space-y-0 ">
                   <button
                    onClick={()=>deckRef.current.click()}
@@ -158,17 +158,31 @@ function Group_Form() {
                   name="Description"
                 ></ErrorMessage>
 
-              {/* deckimage */}
+                {/* deckimage */}
                 <input
                   hidden
                   ref={deckRef}
                   type="file"
-                  required
+                  accept=".png,jpg,jpeg"
+                
                   onChange={(event) => {
-                    setFieldValue(
-                      `deckImage`,
-                      event.target.files[0]
-                    );
+                    if(event.target.files[0])
+                    {
+                      if (event.target.files[0].size > 1097152) {
+                        alert("Deck-Image size is greater than 1 mb");
+                      }
+                      if (event.target.files[0].size <1097152) {
+                        const reader = new FileReader();
+  
+                        reader.readAsDataURL(event.target.files[0]);
+                        reader.onload = () => {
+                          console.log("inside deck onload");
+                          setFieldValue(`deckImage`, reader.result);
+                        };
+                      }
+
+                    }
+                    
                   }}
                 ></input>
               </div>
@@ -220,7 +234,7 @@ function Group_Form() {
                         </div>
 
                         {/* Definiton */}
-                        <div className="flex flex-col  h-32 mr-2 pr-0 pt-1 w-5/12  ">
+                        <div className="flex flex-col  h-32  pr-0 pt-1 w-6/12  ">
                           <label
                             htmlFor="Definition"
                             className="mx-4  w-5/6 mt-6  font-bold"
@@ -230,7 +244,7 @@ function Group_Form() {
                           </label>
                           <Field
                             as="textarea"
-                            className="  mx-4 mt-1 h-40 min-h-[60%]   min-w-[90%]  max-w-[33.33%]  focus:bg-gray-100 "
+                            className="  ml-4 mt-1 h-40 min-h-[60%]   min-w-[90%]  max-w-[33.33%]  focus:bg-gray-100 "
                             placeholder="  Enter Definiton "
                             name={`Terms[${index}].definition`}
                           ></Field>
@@ -241,27 +255,30 @@ function Group_Form() {
                           ></ErrorMessage>
                         </div>
                         {/* upload or image */}
-                        <div className="flex flex-row items-center ">
+                        <div className="flex flex-row items-center bw-32">
                           <button
-                            className={` mr-3 ${
+                            className={`  ${
                               values.Terms[index].image
-                                ? " mt-[20%]"
-                                : " border mt-[45%]"
-                            } border-black w-20 min-w-[10%] h-10    hover:border-blue-600 text-white bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 `}
+                                ? "mt-[45%] w-28 h-28 mb-4 rounded-md border border-purple-600 bg-red-500"
+                                : "border mt-16 mb-3  text-white border-black w-32 h-10   hover:border-blue-600 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900"
+                            }   `}
                             disabled={isSubmitting}
                             type="button"
                             onClick={() => {
                               fileRefs.current[index].click();
                             }}
                           >
+                            
                             {values.Terms[index].image ? (
                               <PreviewImage
-                                className="w-20 h-20 "
+                                className="w-28 h-28 rounded-md "
                                 file={values.Terms[index].image}
                               />
                             ) : (
-                              "Upload"
+                              <span className="flex items-center space-x-3 pl-4 "><FiUpload size={20} color="white"></FiUpload> <span>Upload</span></span>
+                              
                             )}
+                           
                           </button>
                         </div>
 
@@ -307,16 +324,38 @@ function Group_Form() {
                         </div>
 
                         {/* fileinput */}
+                        {/* ---------------------------------------------------------------------------------------- */}
+
                         <input
                           hidden
                           ref={(element) => (fileRefs.current[index] = element)}
                           type="file"
-                          required
+                          
+                          accept=".png,jpg,jpeg"
                           onChange={(event) => {
-                            setFieldValue(
-                              `Terms[${index}].image`,
-                              event.target.files[0]
-                            );
+                            if (event.target.files[0]) {
+                              if (event.target.files[0].size > 1097152) {
+                                alert("Term Image size is greater than 1 mb");
+                              }
+                              if (event.target.files[0].size < 1097152) {
+                                const reader = new FileReader();
+
+                                reader.readAsDataURL(event.target.files[0]);
+                                reader.onload = () => {
+                                  console.log("inside load");
+                                  console.log(reader.result);
+                                  setFieldValue(
+                                    `Terms[${index}].image`,
+                                    reader.result
+                                  );
+                                };
+                              }
+                            }
+
+                            // setFieldValue(
+                            //   `Terms[${index}].image`,
+                            //   event.target.files[0]
+                            // );
                           }}
                         ></input>
                         {/* image */}
@@ -325,6 +364,7 @@ function Group_Form() {
                     <button
                       className="text-white mx-20 text-xl bg-gradient-to-r   from-slate-900 via-purple-900 to-slate-900 rounded-lg w-44 h-10"
                       disabled={isSubmitting}
+                      type='button'
                       onClick={() => {
                         push({ Term: "", definition: "", image: "" });
                       }}
@@ -336,14 +376,14 @@ function Group_Form() {
               </FieldArray>
               <div className="flex flex-row  space-y-2 mx-2 items-center  px-1  rounded-md just"></div>
 
-              <pre>{JSON.stringify({ values, errors }, null, 4)}</pre>
+              {/* <pre>{JSON.stringify({ values, errors }, null, 4)}</pre> */}
             </div>
             <div className="flex flex-row items-center justify-center mb-96">
               <button
                 type="submit"
-                className="w-44 h-12 text-white text-2xl bg-indigo-400  ml-90"
+                className="w-44 h-12 text-xl text-white bg-purple-800  ml-90"
               >
-                Submit
+                Create Deck
               </button>
             </div>
           </Form>

@@ -41,13 +41,13 @@ const CreateFlashCard = () => {
         <h1 className="t font-bold text-4xl text-indigo-900">Create Flash Card</h1>
       </div>
       {/* Nav buttons */}
-      <div className="buttons flex w-100  mt-2 space-x-10 mb-2">
-        <NavLink to='/'  className={ ({isActive})=>isActive?` text-white border-purple-900 border-4 outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-2 font-bold text-2xl bg-red-400 `: `rounded-md w-fit  hover:text-white  font-bold text-2xl  border-b-orange-500 outline-none`}>
-          Create New
+      <div className="buttons flex space-x-0 w-100  mt-0 mb-0">
+        <NavLink to='/'  className={ ({isActive})=>isActive?` text-white border-purple-900 border-2  mr-0 outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-3 font-bold text-2xl  `: `  border-purple-900  outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-3 font-bold text-2xl `}>
+        <span className="mx-10"> CreateNew</span>
         </NavLink>
 
-        <NavLink  to='/MyFlashCards'className={ ({isActive})=>isActive?` text-white border-purple-900 border-4 outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-2 font-bold text-2xl bg-red-400 `: `rounded-md w-fit  hover:text-white  font-bold text-2xl  border-b-orange-500 outline-none`}>
-          My FlashCard
+        <NavLink  to='/MyFlashCards'className={ ({isActive})=>isActive?` text-white border-purple-900   mr-0 border-2 outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-3 font-bold text-2xl  `: `  border-purple-900  outline-none border-t-0 border-l-0 border-r-0 border-b-violet-800-700 pb-3 font-bold text-2xl `}>
+           <span className="mx-10">My Flashcards</span>
         </NavLink>
       </div>
       {/* First Form */}
