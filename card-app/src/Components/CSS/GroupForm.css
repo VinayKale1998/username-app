@@ -1,0 +1,13 @@
+textarea {
+  border: 1px solid gray;
+
+  resize: none;
+  outline: none;
+
+}
+
+textarea:focus
+{
+    border-color: solid red;
+    outline: 1px solid blue;
+}
