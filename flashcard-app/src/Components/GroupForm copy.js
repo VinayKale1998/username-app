@@ -72,7 +72,7 @@ function Group_Form() {
           .max(10, "too many elements"),
       })}
     >
-      {({ values, errors, isSubmitting, setFieldValue }) => (
+      {({ values, errors, isSubmitting, setFieldValue, setFieldError }) => (
         <div>
           <Form>
             <div className=" firstform flex flex-col items-center mx-2  my-0 px-3 py-4 bg-white ">
@@ -114,6 +114,9 @@ function Group_Form() {
                     type="button"
                     onClick={() => {
                       deckRef.current.click();
+                      if (values.deckImage) {
+                        setFieldValue(`deckImage`, null);
+                      }
                     }}
                   >
                     {values.deckImage ? (
@@ -171,6 +174,9 @@ function Group_Form() {
                     if (event.target.files[0]) {
                       if (event.target.files[0].size > 1097152) {
                         alert("Deck-Image size is greater than 1 mb");
+                        setFieldError(
+                          "Group Image size should be less than 1 mb"
+                        );
                       }
                       if (event.target.files[0].size < 1097152) {
                         const reader = new FileReader();
@@ -349,11 +355,6 @@ function Group_Form() {
                                 };
                               }
                             }
-
-                            // setFieldValue(
-                            //   `Terms[${index}].image`,
-                            //   event.target.files[0]
-                            // );
                           }}
                         ></input>
                         {/* image */}
@@ -372,9 +373,9 @@ function Group_Form() {
                   </div>
                 )}
               </FieldArray>
-              <div className="flex flex-row  space-y-2 mx-2 items-center  px-1  rounded-md just"></div>
+              {/* <div className="flex flex-row  space-y-2 mx-2 items-center  px-1  rounded-md just"></div> */}
 
-              {/* <pre>{JSON.stringify({ values, errors }, null, 4)}</pre> */}
+              <pre>{JSON.stringify({ values, errors }, null, 4)}</pre>
             </div>
             <div className="flex flex-row items-center justify-center mb-96">
               <button
