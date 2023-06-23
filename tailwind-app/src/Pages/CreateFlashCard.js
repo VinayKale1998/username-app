@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
 import { useState, useRef } from "react";
+import { MdDelete } from "react-icons/md";
+import { BiEdit } from "react-icons/bi";
 import React from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -314,28 +316,75 @@ function CreateFlashCard() {
 
                         {/* term image upload */}
                         <div
-                          className={`  px-[1%] py-[0.5%]   grow-[2] ${
+                          className={` flex  px-[1%] py-[0.5%]   grow-[2] ${
                             values.Terms[index].image
-                              ? " max-w-[16%] sm:max-w-[12%] lg:max-w-[10%] "
-                              : "max-w-[10%]"
-                          }     max-w-[20%] sm:max-w-[12%] lg:max-w-[15%]   px-[0.2%]  ml-[3%]   flex flex-col items-center self-center  bg-red-200
+                              ? "min-w-[20%] max-w-[22%] sm:max-w-[12%] lg:max-w-[10%] flex-row "
+                              : "max-w-[25%] flex-col"
+                          }      sm:max-w-[12%] lg:max-w-[15%]   px-[0.2%]  ml-[0%]     items-center self-center  bg-red-400
                          `}
                         >
+                          {/* // add and edit button */}
+                          <div>
+                            {/* edit */}
+                            {values.Terms[index].definition &&
+                              values.Terms[index].Term &&
+                              values.Terms[index].image && (
+                                <button
+                                  className=" "
+                                  type="button"
+                                  disabled={isSubmitting}
+                                  onClick={() => {
+                                    focusRefs.current[index].focus();
+                                  }}
+                                >
+                                  <span className="  text-lg md:text-2xl lg:text-4xl  mx-[1%] text-purple-700 font-extrabold">
+                                    
+                                    <BiEdit color="#0033ff" ></BiEdit>
+                                  </span>
+                                </button>
+                              )}
+
+                            {/* delete */}
+                            {values.Terms.length > 1 && (
+                              <button
+                                className={`${
+                                  values.Terms[index].definition &&
+                                  values.Terms[index].Term &&
+                                  values.Terms[index].image
+                                    ? ""
+                                    : ""
+                                }`}
+                                type="button"
+                                disabled={isSubmitting}
+                                onClick={() => {
+                                  remove(index);
+                                  // refs.current.splice(index, index + 1);
+                                }}
+                              >
+                                <span className=" text-sm md:text-lg lg:text-4xl  text-purple-00 font-extrabold bg-purple-400">
+                                    
+                                <MdDelete ></MdDelete>
+                                  </span>
+                                
+                              </button>
+                            )}
+                          </div>
                           <label
                             className={` ${
-                              values.Terms[index].image? " hidden " : ""
-                            } bg-red-100 text-transparent pl-1 py-1  text-xs md:text-base lg:text-xl transition-all  font-bold`}
+                              values.Terms[index].image|| values.Terms.length>0 ? " hidden " : ``
+                            }  text-transparent pl-1 py-1  text-xs md:text-base lg:text-xl transition-all  font-bold`}
                           >
-                            <span className=" text-transparentfont-normal ">
+                            <span className=" text-transparent font-normal ">
                               *
                             </span>
                           </label>
+
                           <button
                             className={` ${
                               values.Terms[index].image
-                                ? "px-0  hover:bg-transparent hover:border-white   py-0 "
+                                ? "px-0  hover:bg-transparent hover:border-white   py-0  min-w-[80%]"
                                 : " w-[99.8%]"
-                            }   border border-gray-700  group shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex space-x-1 bg-white px-2 py-1 x   transition-all outline-none hover:border-2 hover:border-purple-700  hover:text-white  items-center  justify-center self-stretch `}
+                            }   border border-gray-900  group shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex space-x-1 bg-white px-2 py-1 x   transition-all outline-none hover:border-2 hover:border-purple-700  hover:text-white  items-center  justify-center self-stretch `}
                             disabled={isSubmitting}
                             type="button"
                             onClick={() => {
@@ -347,7 +396,7 @@ function CreateFlashCard() {
                           >
                             {values.Terms[index].image ? (
                               <PreviewImage
-                                className=" bg-red-900 rounded-md border  object:cover object:center "
+                                className=" bg-red-900 rounded-md border w-full   object:center  "
                                 file={values.Terms[index].image}
                               />
                             ) : (
@@ -382,7 +431,7 @@ function CreateFlashCard() {
               </FieldArray>
 
               <div>
-                {/* <pre>{JSON.stringify({ values, errors }, null, 4)}</pre> */}
+                <pre>{JSON.stringify({ values, errors }, null, 4)}</pre>
                 <button
                   type="submit"
                   className="py-2 px-6 rounded-sm bg-purple-500 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  ml-[40%]  text-base  sm:text-xl  md:text-2xl  transition-all text-white hover:bg-purple-700 hover:text-white  flex  "
