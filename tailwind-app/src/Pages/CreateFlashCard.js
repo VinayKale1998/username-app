@@ -94,9 +94,9 @@ function CreateFlashCard() {
               {/* first form */}
               <section className="first-form bg-[white] my-1 py-1 px-1  mx-[2%]   flex flex-col sm:mx-[7%] md:mx-[8%] lg:mx-[8%]   transition-all border border-gray-300  border-separate">
                 {/* GroupName and Upload combined */}
-                <div className="flex items-start  mx-1 py-1 ">
+                <div className="flex items-start  mx-1 py-1 transition-all h-[60px] sm:h-[70px] md:h-[90px] lg:h-[100px] bg-red-200 overflow-hidden">
                   {/* GroupName label and input */}
-                  <div className="groupName min-w-[70%] flex flex-col px-[0.2%] py-[0.2%] mx-[0.2%]  my-[0.1%] sm:min-w-[60%] md:min-w-[50%] transition-all">
+                  <div className="groupName  min-w-[70%] flex flex-col px-[0.2%] py-[0.2%] mx-[0.2%]  my-[0.1%] sm:min-w-[60%] md:min-w-[50%] transition-all">
                     {/* grouplabel */}
                     <label className="pl-1 py-1  w-[99.8%] text-xs md:text-base lg:text-xl transition-all  font-bold">
                       Group Name{" "}
@@ -118,19 +118,26 @@ function CreateFlashCard() {
 
                   {/*group image upload*/}
                   <div
-                    className={` ${values.deckImage?"max-w-[5%] ":"max-w-[30%]"} min-w-[10%]   px-[0.2%] py-[0.4%] ml-[0.4%]  overflow-hidden flex flex-col items-center justify-center`}
+                    className={`${
+                      values.deckImage
+                        ? "max-w-[16%] sm:max-w-[12%] lg:max-w-[10%]"
+                        : "max-w-[30%]"
+                    }  bg-blue-100 min-w-[10%]   px-[0.2%]  ml-[0.4%]  flex flex-col items-center justify-center self-center overflow-hidden`}
                   >
-                    {/* dummylabel */}
                     <label
-                      className={`${
-                        values.deckImage ? "hidden " : ""
-                      } pl-1 py-1  text-transparent w-[99.8%] text-xs md:text-base lg:text-xl transition-all  font-bold`}
+                      className={` ${
+                        values.deckImage ? " hidden " : ""
+                      } bg-red-100 text-transparent pl-1 py-1  text-xs md:text-base lg:text-xl transition-all  font-bold`}
                     >
-                      <span className="text-red-600  text-transparent">*</span>
+                      <span className=" text-transparentfont-normal ">*</span>
                     </label>
 
                     <button
-                      className="  border border-gray-700  group shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex space-x-1 bg-white px-2 py-1 x w-[99.8%]   transition-all outline-none hover:border-2 hover:border-purple-700 hover:bg-purple-600 hover:text-white  items-center justify-center "
+                      className={` ${
+                        values.deckImage
+                          ? "px-0  hover:bg-transparent hover:border-white   py-0 "
+                          : " w-[99.8%]"
+                      } border border-gray-700  group shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex space-x-1 bg-white px-2 py-1 x   transition-all outline-none hover:border-2 hover:border-purple-700  hover:text-white  items-center self-stretch `}
                       disabled={isSubmitting}
                       type="button"
                       onClick={() => {
@@ -142,7 +149,7 @@ function CreateFlashCard() {
                     >
                       {values.deckImage ? (
                         <PreviewImage
-                          className=" w-[100%] rounded-md border border-gray-700"
+                          className="  bg-red-900 rounded-md border  object:cover object:center"
                           file={values.deckImage}
                         />
                       ) : (
@@ -156,12 +163,10 @@ function CreateFlashCard() {
                         </span>
                       )}
                     </button>
-
-                    <ErrorMessage
-                      className="groupError hidden  text-red-600 text-xs sm:text-[14px] md:text-[16xpx]  transtion-all"
-                      name="deckImage"
-                      component={Error}
-                    ></ErrorMessage>
+                    {/* <h1
+                      className="text-red-600 text-[10px] text-xs sm:text-sm"
+                     
+                    ></h1> */}
                   </div>
                 </div>
 
@@ -223,7 +228,7 @@ function CreateFlashCard() {
 
                     {values.Terms.map((item, index) => (
                       <div
-                        className="flex space-x-1 flex-wrap px-1 py-1 mx-1 my-1 grow space-y-1 rounded-lg  items-start"
+                        className="flex   flex-wrap  py-1 mx-1 my-1 grow space-y-1 rounded-lg  items-start bg-blue-300"
                         key={index}
                       >
                         {/* index */}
@@ -259,15 +264,15 @@ function CreateFlashCard() {
                         </div>
 
                         {/* term description */}
-                        <div className="  flex flex-col   min-w-[94%]  pl-[3%] py-[0.5%]  grow-[3]   sm:min-w-[50%] sm:pl-[0.2%] ">
+                        <div className="  flex flex-col   min-w-[84%]  pl-[3%] py-[0.5%]  grow-[3]   sm:min-w-[50%]   sm:pl-[1%]  ">
                           <label className="pl-1 py-1  w-[99.8%] text-xs md:text-base lg:text-xl transition-all  font-bold">
-                            Term  Definition{" "}
+                            Term Definition{" "}
                             <span className="text-red-600 font-normal ">*</span>
                           </label>
                           <Field
                             as="textarea"
                             name={`Terms[${index}].definition`}
-                            className=" border border-gray-700 py-1 bg-white  w-[99.5%] px-1 text-[12px]  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] md:text-base lg:text-xl transition-all overflow-hidden hover:border-2 hover:border-purple-700 hover:bg-purple-100  outline-none"
+                            className=" border border-gray-700 py-1 bg-white   w-[99.5%] px-1 text-[12px]  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] md:text-base lg:text-xl transition-all overflow-hidden hover:border-2 hover:border-purple-700 hover:bg-purple-100  outline-none"
                             placeholder="Enter Term Description"
                           ></Field>
                           <ErrorMessage
@@ -309,21 +314,40 @@ function CreateFlashCard() {
 
                         {/* term image upload */}
                         <div
-                          className={`  px-[2%] py-[0.5%]  grow-[2] ${
-                            values.Terms[index].image ? " max-w-[10%] " : " "
-                          } max-w-[30%]    sm:min-w-[15%] flex  items-center `}
+                          className={`  px-[1%] py-[0.5%]   grow-[2] ${
+                            values.Terms[index].image
+                              ? " max-w-[16%] sm:max-w-[12%] lg:max-w-[10%] "
+                              : "max-w-[10%]"
+                          }     max-w-[20%] sm:max-w-[12%] lg:max-w-[15%]   px-[0.2%]  ml-[3%]   flex flex-col items-center self-center  bg-red-200
+                         `}
                         >
+                          <label
+                            className={` ${
+                              values.Terms[index].image? " hidden " : ""
+                            } bg-red-100 text-transparent pl-1 py-1  text-xs md:text-base lg:text-xl transition-all  font-bold`}
+                          >
+                            <span className=" text-transparentfont-normal ">
+                              *
+                            </span>
+                          </label>
                           <button
-                            className=" border border-gray-700 group w-[99.5%] px-[0.1%] py-[2%] bg-white  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  text-[12px]  md:text-base lg:text-xl transition-all font-bold flex   hover:border-purple-700 hover:bg-purple-600 hover:text-white  justify-center"
+                            className={` ${
+                              values.Terms[index].image
+                                ? "px-0  hover:bg-transparent hover:border-white   py-0 "
+                                : " w-[99.8%]"
+                            }   border border-gray-700  group shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex space-x-1 bg-white px-2 py-1 x   transition-all outline-none hover:border-2 hover:border-purple-700  hover:text-white  items-center  justify-center self-stretch `}
                             disabled={isSubmitting}
                             type="button"
                             onClick={() => {
                               fileRefs.current[index].click();
+                              if (values.Terms[index].image) {
+                                setFieldValue(`Terms[${index}].image`, null);
+                              }
                             }}
                           >
                             {values.Terms[index].image ? (
                               <PreviewImage
-                                className=" rounded-md "
+                                className=" bg-red-900 rounded-md border  object:cover object:center "
                                 file={values.Terms[index].image}
                               />
                             ) : (
@@ -358,7 +382,7 @@ function CreateFlashCard() {
               </FieldArray>
 
               <div>
-                <pre>{JSON.stringify({ values, errors }, null, 4)}</pre>
+                {/* <pre>{JSON.stringify({ values, errors }, null, 4)}</pre> */}
                 <button
                   type="submit"
                   className="py-2 px-6 rounded-sm bg-purple-500 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  ml-[40%]  text-base  sm:text-xl  md:text-2xl  transition-all text-white hover:bg-purple-700 hover:text-white  flex  "
