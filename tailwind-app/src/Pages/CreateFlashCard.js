@@ -22,7 +22,19 @@ function CreateFlashCard() {
   const focusRefs = useRef([]);
   const deckRef = useRef();
   const dispatch = useDispatch();
+
   const terms = useSelector((state) => state.terms);
+
+  const [image, setImage] = React.useState(false);
+
+  const url = {
+    image: `data:image/png;base64,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`,
+  };
+
+  const imageHandler = () => {
+    setImage(true);
+  };
+
   return (
     <Formik
       initialValues={initialState}
@@ -96,7 +108,7 @@ function CreateFlashCard() {
               {/* first form */}
               <section className="first-form bg-[white] my-1 py-1 px-1  mx-[2%]   flex flex-col sm:mx-[7%] md:mx-[8%] lg:mx-[8%]   transition-all border border-gray-300  border-separate">
                 {/* GroupName and Upload combined */}
-                <div className="flex items-start  mx-1 py-1 transition-all h-[60px] sm:h-[70px] md:h-[90px] lg:h-[100px] bg-red-200 overflow-hidden">
+                <div className="flex items-start  mx-1 py-1 transition-all h-[60px] sm:h-[70px] md:h-[90px] lg:h-[100px] overflow-hidden">
                   {/* GroupName label and input */}
                   <div className="groupName  min-w-[70%] flex flex-col px-[0.2%] py-[0.2%] mx-[0.2%]  my-[0.1%] sm:min-w-[60%] md:min-w-[50%] transition-all">
                     {/* grouplabel */}
@@ -107,7 +119,7 @@ function CreateFlashCard() {
 
                     {/* groupInput */}
                     <Field
-                      className="  bg-white px-1 py-1 x w-[99.8%] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  text-[12px]  md:text-base lg:text-xl transition-all outline-none hover:border-2 hover:border-purple-700 hover:bg-purple-100  outline border border-gray-700 "
+                      className=" hover:scale-[101%] bg-white px-1 py-1 x w-[99.8%] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  text-[12px]  md:text-base lg:text-xl transition-all outline-none hover:border-2 hover:border-purple-700 hover:bg-purple-100  outline border border-gray-700 "
                       placeholder="Enter Group Name"
                       name="Group"
                     ></Field>
@@ -124,12 +136,12 @@ function CreateFlashCard() {
                       values.deckImage
                         ? "max-w-[16%] sm:max-w-[12%] lg:max-w-[10%]"
                         : "max-w-[30%]"
-                    }  bg-blue-100 min-w-[10%]   px-[0.2%]  ml-[0.4%]  flex flex-col items-center justify-center self-center overflow-hidden`}
+                    }   min-w-[10%]   px-[0.2%]  ml-[0.4%]  flex flex-col items-center justify-center self-center overflow-hidden`}
                   >
                     <label
                       className={` ${
                         values.deckImage ? " hidden " : ""
-                      } bg-red-100 text-transparent pl-1 py-1  text-xs md:text-base lg:text-xl transition-all  font-bold`}
+                      } text-transparent pl-1 py-1  text-xs md:text-base lg:text-xl transition-all  font-bold`}
                     >
                       <span className=" text-transparentfont-normal ">*</span>
                     </label>
@@ -137,9 +149,9 @@ function CreateFlashCard() {
                     <button
                       className={` ${
                         values.deckImage
-                          ? "px-0  hover:bg-transparent hover:border-white   py-0 "
+                          ? "px-0  hover:bg-transparent   py-0 "
                           : " w-[99.8%]"
-                      } border border-gray-700  group shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex space-x-1 bg-white px-2 py-1 x   transition-all outline-none hover:border-2 hover:border-purple-700  hover:text-white  items-center self-stretch `}
+                      } border border-gray-700  group shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex space-x-1 bg-white px-2 py-1 x   transition-all outline-none hover:border-2 hover:border-purple-700  hover:scale-110   items-center self-stretch `}
                       disabled={isSubmitting}
                       type="button"
                       onClick={() => {
@@ -149,21 +161,21 @@ function CreateFlashCard() {
                         }
                       }}
                     >
-                      {values.deckImage ? (
+                      {values.deckImage && (
                         <PreviewImage
                           className="  bg-red-900 rounded-md border  object:cover object:center"
                           file={values.deckImage}
                         />
-                      ) : (
-                        <span className="flex ">
-                          <span className="pt-[3px] text-xs md:text-base lg:text-xl mx-[1%] text-purple-700 font-extrabold group-hover:text-inherit">
-                            <FiUpload></FiUpload>
-                          </span>
-                          <span className="text-[12px] md:text-base lg:text-lg font-bold text-purple-700 group-hover:text-inherit">
-                            Upload
-                          </span>
-                        </span>
                       )}
+
+                      <span className="flex ">
+                        <span className="pt-[3px] text-xs md:text-base lg:text-xl mx-[1%] text-purple-700 font-extrabold group-hover:text-inherit">
+                          <FiUpload></FiUpload>
+                        </span>
+                        <span className="text-[12px] md:text-base lg:text-lg font-bold text-purple-700 group-hover:text-inherit">
+                          Upload
+                        </span>
+                      </span>
                     </button>
                     {/* <h1
                       className="text-red-600 text-[10px] text-xs sm:text-sm"
@@ -183,7 +195,7 @@ function CreateFlashCard() {
                   <Field
                     as="textarea"
                     name="Description"
-                    className="  border border-gray-700 bg-white  my-1 px-1 py-1 x w-[99.8%]   text-[12px]  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] md:text-base lg:text-xl transition-all outline-none hover:border-2 hover:border-purple-700 hover:bg-purple-100   "
+                    className="  hover:scale-[101%] border border-gray-700 bg-white  my-1 px-1 py-1 x w-[99.8%]   text-[12px]  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] md:text-base lg:text-xl transition-all outline-none hover:border-2 hover:border-purple-700 hover:bg-purple-100   "
                     placeholder="Enter Group Description"
                   ></Field>
                   <ErrorMessage
@@ -230,11 +242,11 @@ function CreateFlashCard() {
 
                     {values.Terms.map((item, index) => (
                       <div
-                        className="flex   flex-wrap  py-1 mx-1 my-1 grow space-y-1 rounded-lg  items-start bg-blue-300"
+                        className="flex   flex-wrap  py-1 mx-1 my-1 grow space-y-1 rounded-lg  items-start bg-purple-100"
                         key={index}
                       >
                         {/* index */}
-                        <h1 className=" w-4 h-4 shrink-0 mt-[2%] bg-purple-400 px-1 py-1 rounded-full flex items-center justify-center    text-[10px] sm:text-[14px] md:text-[16xpx] lg:text-[20px]  font-bold transtion-all sm:w-6 sm:h-6 md:w-8 md:h-8  lg:w-10 lg:h-10">
+                        <h1 className=" w-4 h-4 shrink-0 mt-[2%] bg-purple-500 px-1 py-1 rounded-full flex items-center justify-center    text-[10px] sm:text-[14px] md:text-[16xpx] lg:text-[20px]  font-bold transtion-all sm:w-6 sm:h-6 md:w-8 md:h-8  lg:w-10 lg:h-10">
                           {index + 1}
                         </h1>
 
@@ -249,7 +261,7 @@ function CreateFlashCard() {
                             {({ field, form, meta }) => (
                               <input
                                 {...field}
-                                className="border border-gray-700  px-1 py-1 w-[99.5%] bg-white text-[12px]  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  md:text-base lg:text-xl transition-all  hover:border-2 hover:border-purple-700 hover:bg-purple-100  outline-none"
+                                className=" focus:bg-purple-100  border border-gray-700  px-1 py-1 w-[99.5%] bg-white text-[12px]  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  md:text-base lg:text-xl transition-all  hover:border-2 hover:border-purple-700 hover:bg-purple-100  outline-none"
                                 ref={(element) =>
                                   (focusRefs.current[index] = element)
                                 }
@@ -316,14 +328,16 @@ function CreateFlashCard() {
 
                         {/* term image upload */}
                         <div
-                          className={` flex  px-[1%] py-[0.5%]   grow-[2] ${
+                          className={` hidden   px-[1%] py-[0.5%]   grow-[2] ${
                             values.Terms[index].image
-                              ? "min-w-[20%] max-w-[22%] sm:max-w-[12%] lg:max-w-[10%] flex-row "
-                              : "max-w-[25%] flex-col"
+                              ? "min-w-[20%] max-w-[22%] sm:max-w-[12%] lg:max-w-[10%]  flex flex-row "
+                              : "max-w-[25%] flex flex-col"
                           }      sm:max-w-[12%] lg:max-w-[15%]   px-[0.2%]  ml-[0%]     items-center self-center  bg-red-400
                          `}
                         >
                           {/* // add and edit button */}
+
+                          {/* */}
                           <div>
                             {/* edit */}
                             {values.Terms[index].definition &&
@@ -338,8 +352,7 @@ function CreateFlashCard() {
                                   }}
                                 >
                                   <span className="  text-lg md:text-2xl lg:text-4xl  mx-[1%] text-purple-700 font-extrabold">
-                                    
-                                    <BiEdit color="#0033ff" ></BiEdit>
+                                    <BiEdit color="#0033ff"></BiEdit>
                                   </span>
                                 </button>
                               )}
@@ -351,8 +364,8 @@ function CreateFlashCard() {
                                   values.Terms[index].definition &&
                                   values.Terms[index].Term &&
                                   values.Terms[index].image
-                                    ? ""
-                                    : ""
+                                    ? "visible"
+                                    : "hidden"
                                 }`}
                                 type="button"
                                 disabled={isSubmitting}
@@ -362,16 +375,17 @@ function CreateFlashCard() {
                                 }}
                               >
                                 <span className=" text-sm md:text-lg lg:text-4xl  text-purple-00 font-extrabold bg-purple-400">
-                                    
-                                <MdDelete ></MdDelete>
-                                  </span>
-                                
+                                  <MdDelete></MdDelete>
+                                </span>
                               </button>
                             )}
                           </div>
                           <label
                             className={` ${
-                              values.Terms[index].image|| values.Terms.length>0 ? " hidden " : ``
+                              values.Terms[index].image ||
+                              values.Terms.length > 0
+                                ? " hidden "
+                                : ``
                             }  text-transparent pl-1 py-1  text-xs md:text-base lg:text-xl transition-all  font-bold`}
                           >
                             <span className=" text-transparent font-normal ">
@@ -405,6 +419,70 @@ function CreateFlashCard() {
                                   <FiUpload></FiUpload>
                                 </span>
                                 <span className="text-[12px]  md:text-base lg:text-lg font-bold text-purple-700 group-hover:text-inherit ">
+                                  Upload
+                                </span>
+                              </span>
+                            )}
+                          </button>
+                        </div>
+
+                        {/* dummy div for upload wrapper */}
+
+                        <div className=" ml-6 sm:ml-8 lg:ml-1  sm:min-w-[30%] sm:max-w-[35%]  md:min-w-[25%]  md:max-w-[30%] lg:min-w-[15%] lg:max-w-[25%] max-w-[60%] transition-all flex items-center self-center">
+                          <div className="flex flex-col items-center justify-around  self-stretch">
+                            {/* edit button */}
+                            <button
+                              className="   my-1 mx-1 sm:text-xl md:text-xl lg:text-2xl xl:text-3xl  transition-all text-xl text-purple-700   hover:scale-125   self-start"
+                              type="button"
+                              onClick={() => {
+                                focusRefs.current[index].focus();
+                              }}
+                            >
+                              <BiEdit></BiEdit>
+                            </button>
+
+                            {/* delete button */}
+                            {values.Terms.length > 1 && (
+                              <button
+                                className=" my-1 mx-1 sm:text-xl md:text-xl lg:text-2xl xl:text-3xl transition-all text-xl text-purple-700  self-end  hover:scale-125 "
+                                type="button"
+                                onClick={() => {
+                                  remove(index);
+                                  // refs.current.splice(index, index + 1);
+                                }}
+                              >
+                                <MdDelete></MdDelete>
+                              </button>
+                            )}
+                          </div>
+
+                          <button
+                            className="px-[2%] py-[2%] mx-1 my-1 bg-white   flex justify-center items-center self-center border border-gray-900   hover:scale-[108%] transition-all "
+                            onClick={() => {
+                              fileRefs.current[index].click();
+                              if (values.Terms[index].image) {
+                                setFieldValue(`Terms[${index}].image`, null);
+                              }
+                            }}
+                            type="button"
+                          >
+                            {values.Terms[index].image && (
+                              // <PreviewImage
+                              //   file={url.image}
+                              //   className="  w-full object-cover object-center h-14 sm:h-16 md:h-20 lg:h-24 transition-all"
+                              // ></PreviewImage>
+
+                              <PreviewImage
+                                className="  w-full object-cover object-center h-14 sm:h-16 md:h-20 lg:h-24 transition-all "
+                                file={values.Terms[index].image}
+                              />
+                            )}
+                            {!values.Terms[index].image && (
+                              <span className=" flex  flex-row items-center ">
+                                <span className=" px-1  sm:text-sm md:text-md lg:text-lg xl:text-xl text-sm  text-purple-700 ">
+                                  <FiUpload></FiUpload>
+                                </span>
+                                <span className=" pr-1 sm:text-sm md:text-md lg:text-lg xl:text-xl text-sm  text-purple-700 font-semibold ">
                                   Upload
                                 </span>
                               </span>
