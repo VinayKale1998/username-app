@@ -13,13 +13,20 @@ const Movies = () => {
     dispatch(movieActions.setValue({ movie: event.target.innerHTML }));
   };
   return (
-    <div className="">
+    <div className="movie-row">
       {display.movies.map((item) => (
         <Button
           onClick={clickHandler}
-          className={`${
+          key={item}
+          className={`movie-column  ${
+            movies.value
+              ? movies.value == item
+                ? "movie-column-selected "
+                : " "
+              : ""
+          }   ${
             movies.value ? (movies.value == item ? "bg-green-300 " : " ") : ""
-          } }text-xs transition-all sm:text-sm md:text-md lg:text-lg xl:text-xl  mx-1 my-1 px-1 py-1 border border-1 border-red-300 rounded-sm cursor-pointer`}
+          } text-xs transition-all sm:text-sm md:text-md lg:text-lg xl:text-xl  mx-1 my-1 px-1 py-1 border border-1 border-red-300 rounded-sm cursor-pointer hover:bg-green-200`}
         >
           {item}
         </Button>

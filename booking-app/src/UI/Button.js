@@ -17,7 +17,7 @@ function Button(props) {
   return (
     <button
       type="button"
-      className={`  ${props.className}`}
+      className={`${props.className}`}
       onClick={clickHandler}
     >
       {props.children}
