@@ -36,7 +36,7 @@ function Input(props) {
 
       
       onChange={changeHandler}
-      className="text-xs transition-all sm:text-sm md:text-md lg:text-lg xl:text-xl bg-gray-200 border border-1 border-gray-600 text-center"
+      className="text-xs transition-all sm:text-sm md:text-md lg:text-lg xl:text-xl rounded-md   border border-1 border-gray-600 text-center"
       value={props.value}
       type="number"
       step={1}

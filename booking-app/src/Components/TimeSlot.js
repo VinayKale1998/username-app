@@ -23,8 +23,8 @@ function TimeSlot() {
                 : ""
               : ""
           } ${
-            slots.value ? (slots.value == item ? "bg-green-300 " : "") : ""
-          }text-xs transition-all sm:text-sm md:text-md lg:text-lg xl:text-xl  mx-1 my-1 px-1 py-1 border border-1 border-red-300 rounded-sm cursor-pointer  hover:bg-green-200`}
+            slots.value ? (slots.value == item ? "bg-gradient-to-r from-yellow-600 to-red-600 " : "") : ""
+          } hover:scale-105 text-xs transition-all sm:text-sm md:text-md lg:text-lg xl:text-xl  mx-1 my-1 px-1 py-1 border border-1 border-red-900 rounded-sm cursor-pointer  hover:bg-gradient-to-r from-yellow-600 to-red-600`}
         >
           {item}
         </Button>
