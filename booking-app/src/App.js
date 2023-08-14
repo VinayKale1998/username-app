@@ -23,7 +23,7 @@ function App() {
   const [confirm, setConfirm] = useState(null);
   const dispatch = useDispatch();
 
-  const URL = "http://localhost:8080/api/booking";
+  const URL = "https://bookmyshowapi-lya5.onrender.com";
 
   const submitHanlder = async (event) => {
     event.preventDefault();
