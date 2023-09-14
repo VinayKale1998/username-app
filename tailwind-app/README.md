@@ -1,70 +1,78 @@
-# Getting Started with Create React App
+# FlashKrew
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+FlashKrew is an interactive flashcard generator web application, where users can create a deck of flashcards, store and view them at a later point in time locally.
+This project is powered by React JS, Redux , Tailwind CSS,Formik,Yup react-routerd-dom  and Jest
 
-## Available Scripts
+## Directory💠
 
-In the project directory, you can run:
+The project's src folder is split into Components, Store and UI and test for ease of management and modularity.
 
-### `npm start`
+## App.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Contains code for route configurations for react-router-dom and renders the RouterProvider
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This app uses a total of Five pages:- **HomePage**, **CreateFlashCard page** ,**MyFlashCards page**, **FlashCard Page** and **Error page**
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Pages Folder
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**HomePage**
+HomePage contains the web app header "FlashKrew" with a nav bar for createflashcard and myflashcards page, it has a outlet for rendering routes from it
+By default the outler renders the below createflashcard page because of the router configurations
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**CreateFlashCard**
+The major page in the whole app, where we actually use Formik library to add Forms for Flash card deck creation. 
+Handles the below things
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Accept User input for Group name , Description and Group Image
+2. Accept user input for Term Name(card name), term description and Term image, multiple such terms can be added to one group
+3. Maintains the state of the form
+4. Handles the form submission ,wherein we have dispatched actions to redux store which inturn manages localstorage data
 
-### `npm run eject`
+**ErrorPage**
+ErrorPage is bound as a fallback in the router configuration to ensure when the user enters an inavlid route upon the base route, the user is redirected to this page,
+contains link to the Create FlashCard Page and MyFlashcards Page
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**MyFlashCards Page**
+This page renders a list of Groups(decks) if created
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**FlashCards**
+This page renders the expansion of the selected Groups by rendering the term details using a carousel for images and allows user to download and share the current deck
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Store Folder
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**index.js**
+Contains the configuration for the Redux store which uses @reduxjs/toolkit , deckSlice created to maintain state of the added decks
 
-## Learn More
+Handles deck addition and keeps the localstorage in sync with the state using the reducer functions
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## UI Folder
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Error.js**
+Renders the error element for Formik form errors used in createFlashcard page
 
-### Code Splitting
+**PreviewImage.js**
+Acts as a wrapper element to render images with img elements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**ShareModal.js**
 
-### Analyzing the Bundle Size
+This component uses react portal to open up a modal for sharing the deck link and uses the respective module.css file
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Card.js**
+This component acts as a simple div wrapper
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+## Test Folder
+ Contains test files for the App components
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+# Built with
 
-### Deployment
+<a href='https://react.dev/' ><img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"  height="25" alt='react'></a>
+<a href='https://redux.js.org/' ><img src="https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white"  height="25"></a>
+<a href='https://tailwindcss.com/' ><img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white"  height="25"></a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Deployed on
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<a href='https://render.com/' ><img src="https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white"  height="25"></a>

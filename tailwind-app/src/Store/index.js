@@ -1,42 +1,37 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-// localStorage.setItem('Decks','[]')
+// configuration for the redux store using createSlice and configure slice methods from @reduxjs/toolkit
 
+//slice created to manage state of the flashcard decks created by the user
 const deckSlice = createSlice({
   name: "deckSlice",
-  initialState: [],
+
+  //takes the initial state from the local storage ,used for page reload data retention
+  initialState: localStorage.getItem("Decks")
+    ? JSON.parse(localStorage.getItem("Decks"))
+    : [],
   reducers: {
+    //reducer to add deck into the state and handle the local storage as well
     deckDetailsAdd(state, action) {
-      console.log(action.payload);
-      state.push(action.payload);
-    },
+      if (localStorage.getItem("Decks") === null || undefined) {
+        localStorage.setItem("Decks", "[]");
+      }
+      // console.log("inside deck reducer");
+      // console.log(action.payload);
 
-    add() {},
-    subtract() {},
-  },
-});
-
-let count = 1;
-const termsSlice = createSlice({
-  name: "terms",
-  initialState: [],
-  reducers: {
-    addDeck(state, action) {
-      console.log(action.payload);
-      console.log('reducer')
-        // const Decks=JSON.parse(localStorage.getItem('Decks'))
-        // const newDecks=[...Decks,action.payload]
-        // localStorage.setItem('Decks',newDecks)
-        
       state.push(action.payload);
-      console.log(state);
+      const Decks = JSON.parse(localStorage.getItem("Decks"));
+      const newDecks = [...Decks, action.payload];
+
+      localStorage.setItem("Decks", JSON.stringify(newDecks));
     },
   },
 });
 
-const store = configureStore({ reducer: { deck: termsSlice.reducer } });
+//store configured 
+const store = configureStore({ reducer: { deck: deckSlice.reducer } });
 
+
+//exporting the store for the provider and actions to access the reducer functions
 export default store;
-
 export const deckActions = deckSlice.actions;
-export const termActions = termsSlice.actions;

@@ -1,6 +1,8 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 
+//configuration for the redux store split into multiple slices with appropriate actions 
+
 /// redux slice for displaying movies,slots and seat placeholders-----------------------------------------------------------//
 const displaySlice = createSlice({
   name: "displaySlice",
@@ -14,10 +16,12 @@ const displaySlice = createSlice({
     ],
     slots: ["10:00 AM", "01:00 PM", "03:00 PM", "08:00 PM"],
     seats: ["A1", "A2", "A3", "A4", "D1", "D2"],
-    update:0
+ 
   },
   reducers: {},
 });
+
+
 
 
 //redux slice for movie actions-----------------------------------------------------------//
@@ -32,7 +36,7 @@ const movieSlice = createSlice({
   reducers: {
     setValue(state, action) {
       {
-        console.log("inside reducer false");
+        // console.log("inside reducer false");
         // state.clicked = true;
         if (action.payload.movie == state.value) {
           localStorage.setItem("movie", "");
@@ -63,7 +67,7 @@ const slotSlice = createSlice({
   reducers: {
     setValue(state, action) {
       {
-        console.log("inside reducer false");
+        // console.log("inside reducer false");
         // state.clicked = true;
         if (action.payload.slot == state.value) {
           localStorage.setItem("slot", "");
@@ -109,15 +113,35 @@ const seatSlice = createSlice({
   }
 });
 
+
+///=========================
+const lastBooking=  createSlice({
+  name:"lastBooking",
+  initialState:{
+    data:null
+  },
+  reducers:{
+    setLast(state,action)
+    {
+      state.data= action.payload
+    }
+
+  }
+  
+})
+
+
+
 const store = configureStore({
   reducer: {
     display: displaySlice.reducer,
     movies: movieSlice.reducer,
     seats:seatSlice.reducer,
     slots: slotSlice.reducer,
+    lastBooking:lastBooking.reducer
     
   },
-  devTools:false
+
 });
 
 
@@ -127,3 +151,4 @@ export const displayActions = displaySlice.actions;
 export const movieActions = movieSlice.actions;
 export const seatActions = seatSlice.actions;
 export const slotActions = slotSlice.actions;
+export const lastBookActions = lastBooking.actions;

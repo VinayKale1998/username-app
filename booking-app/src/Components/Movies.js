@@ -5,13 +5,20 @@ import { movieActions } from "../Store";
 
 const Movies = () => {
   const dispatch = useDispatch();
+
+  //subscribing to the display and movie state from redux
   const display = useSelector((state) => state.display);
   const movies = useSelector((state) => state.movies);
 
+
+  //handles state updation by action disptach upon user selection
   const clickHandler = (event) => {
-    console.log(event.target.innerHTML);
+    // console.log(event.target.innerHTML);
     dispatch(movieActions.setValue({ movie: event.target.innerHTML }));
   };
+
+
+  //renders a list of movies and handles user selection 
   return (
     <div className="movie-row flex flex-col sm:flex-row justify-center " >
       {display.movies.map((item) => (

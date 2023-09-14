@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Components/Header";
 import Movies from "./Components/Movies";
 import TimeSlot from "./Components/TimeSlot";
@@ -12,19 +12,25 @@ import { seatActions } from "./Store";
 import ErrorModal from "./UI/ErrorModal";
 import ConfirmationModal from "./UI/ConfirmationModal";
 import { PiPopcornBold } from "react-icons/pi";
-
-// import axios from "axios";
+import BookingConfirmModal from "./UI/BookingConfirmModal";
+import { URL } from "./Store/data";
 
 function App() {
+  // gethering states from redux
   const movies = useSelector((state) => state.movies);
   const seats = useSelector((state) => state.seats);
   const slots = useSelector((state) => state.slots);
+  //initalizing states for errorr and confirmation popups
   const [errorState, setError] = useState(null);
   const [confirm, setConfirm] = useState(null);
+  const [bookingConfirm, setBookingConfirm] = useState(null);
+
+  const [lastBooking, setLastBooking] = useState(null);
+  
   const dispatch = useDispatch();
 
-  const URL = "http://localhost:8080/api/booking";
-
+  //submitHandler for final booking confirmation //
+  //checking if all the required fields are present, else setting an error
   const submitHanlder = async (event) => {
     event.preventDefault();
     if (
@@ -48,25 +54,20 @@ function App() {
       } else if (slots.value == null) {
         setError("Please select a slot! ");
         console.log(seats.value);
-      } else if (true) {
-        console.log("Inside the else if for seats");
-        var count = 0;
-        // for(const val of seats.value)
-        // {
-        //  count= val>0?count+1:count;
-        // }
-        // console.log("count",count)
-        if (count == 0) {
-          setError("Please select a Seat!");
-        }
+      } else if (
+        seats.value["A1"] == 0 &&
+        seats.value["A2"] == 0 &&
+        seats.value["A3"] == 0 &&
+        seats.value["A4"] == 0 &&
+        seats.value["D1"] == 0 &&
+        seats.value["D2"] == 0
+      ) {
+        setError("Please select a Seat!");
       }
     }
   };
 
-  const dismissHandler = () => {
-    setError(null);
-  };
-
+  //confirm handler to process the confirm button after uses clicks on confirm booking
   const confirmHandler = async (event) => {
     console.log("in confirm");
     const bookingInfo = {
@@ -83,11 +84,24 @@ function App() {
         body: JSON.stringify(bookingInfo),
       });
       console.log(response.status);
-      localStorage.clear();
 
-      dispatch(movieActions.clearValue());
-      dispatch(slotActions.clearValue());
-      dispatch(seatActions.clearValue());
+      if (response.status == 200) {
+        setBookingConfirm(true);
+        setLastBooking({
+          movie: movies.value,
+          seats: seats.value,
+          slot: slots.value,
+        });
+      }
+      {
+        localStorage.clear();
+
+        dispatch(movieActions.clearValue());
+        dispatch(slotActions.clearValue());
+        dispatch(seatActions.clearValue());
+      }
+
+      if (response.status == 404) setBookingConfirm(false);
     } catch (err) {
       console.log(err);
     }
@@ -95,13 +109,28 @@ function App() {
     setConfirm(null);
   };
 
+  //cancelhandler to handle to cancel button while in the ConfirmationModal modal
   const cancelHandler = (event) => {
-    console.log("in cancel");
     setConfirm(null);
   };
 
+  ///dismisshandler to handle the cancel button for error message
+  const dismissHandler = () => {
+    setError(null);
+  };
+
+  //use Effect to listen to changes in bookingConfirm state and collapse the  BookingConfirmModal modal
+  useEffect(() => {
+    setTimeout(() => {
+      if (bookingConfirm == false || bookingConfirm == true) {
+        setBookingConfirm(null);
+      }
+    }, 2000);
+  }, [bookingConfirm]);
+
   return (
-    <div>
+    <div className="app">
+      {/* modal for error display */}
       {errorState && (
         <ErrorModal
           title="Booking Details Incomplete"
@@ -111,6 +140,7 @@ function App() {
           {" "}
         </ErrorModal>
       )}
+      {/* modal for user confirmation   */}
       {confirm && (
         <ConfirmationModal
           title="Confirm to proceed"
@@ -121,7 +151,22 @@ function App() {
           {" "}
         </ConfirmationModal>
       )}
+
+      {/* modal for booking confirmation display */}
+      {bookingConfirm == true && (
+        <BookingConfirmModal
+          title="Booking Confirmed !!!"
+          message="Enjoy your movie"
+          onConfirm={confirmHandler}
+          onCancel={cancelHandler}
+        >
+          {" "}
+        </BookingConfirmModal>
+      )}
+
+      {/* header for the page */}
       <Header></Header>
+
       <section className="mx-[0.1%]  md:mt-[4vh]  sm:mt-[3vh]  mt-2vh py-[5px] pl-[2vh]  justify-center md:justify-start text-sm transition-all sm:text-md md:text-lg lg:text-2xl xl:text-3xl font-bold md:h-[10vh] h-8vh flex items-center">
         Grab Your Popcorns &nbsp;<PiPopcornBold></PiPopcornBold>{" "}
       </section>
@@ -152,9 +197,20 @@ function App() {
           </section>
         </section>
 
-        <section className="  hidden lg:block   mx-2  my-2   px-1 py-1 lastbooking w-[18%] bg-gradient-to-r from-rose-400 to-orange-300 border border-1 ">
-          <LastBooking className=" "></LastBooking>
-        </section>
+        {lastBooking == null && (
+          <section className="lastBooking  hidden lg:block   mx-2  my-2   px-1 py-1 lastbooking w-[18%] bg-gradient-to-r from-rose-400 to-orange-300 border border-1 ">
+            <LastBooking className="lastBooking " data={null}></LastBooking>
+          </section>
+        )}
+
+        {lastBooking != null && (
+          <section className="lastBooking  hidden lg:block   mx-2  my-2   px-1 py-1 lastbooking w-[18%] bg-gradient-to-r from-rose-400 to-orange-300 border border-1 ">
+            <LastBooking
+              className="lastBooking "
+              data={lastBooking}
+            ></LastBooking>
+          </section>
+        )}
       </main>
     </div>
   );

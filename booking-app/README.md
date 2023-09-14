@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# BookMyShow 
+The  fontend project is powered by **React**, **Redux** and **Tailwind CSS**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Allows user to make a movie booking by selecting a movie, seat type and number, seat . Also, it provides the last movie booking details
 
-## Available Scripts
+ # Directory💠
+ We have split the project's src folder into multiple folders as -  Components, Store and UI for ease of management and modularity
 
-In the project directory, you can run:
+## App.js
+Renders the main booking page with Movies, Seats and Timeslot components , handles booking submission and error and comfiration modal dispaly.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Components Folder 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+**Header.js**
+Renders the header of the bookMyShow page
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**LastBooking.js**
+Renders the last booking details by fetching the backend API upon first render and for subsequent booking in the same session , collects booking confirmation from the local state and renders it to avoid unnecessary calls to the backend - Parent: App.js
 
-### `npm run build`
+**Movies.js**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Renders a list of movies and handles user selection - Parent: App.js
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Seats.js**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Renders a list of seat types with input field for user input  and handles user selection -  Parent: App.js
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**TimeSlot.js**
+Renders a list of seats and handles user selection - Parent: App.js
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Store Folder
+**index.js**
+Contains the configuration for the Redux store with multiple slices as display, movies , seats and slot with respective actions
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## UI Folder
+Contains reusable UI components : ErrorModal, ConfirmationModal, BookingConfirmModal, Button, Input , Card and respective module.css files
 
-## Learn More
+## Built with
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<a href='https://react.dev/' ><img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"  height="25" alt='react'></a>
+<a href='https://redux.js.org/' ><img src="https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white"  height="25"></a>
+<a href='https://tailwindcss.com/' ><img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white"  height="25"></a>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## Deployed on
+<a href='https://render.com/' ><img src="https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white"  height="25"></a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

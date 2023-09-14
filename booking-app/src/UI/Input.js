@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { seatActions } from "../Store";
 import { useDispatch, useSelector } from "react-redux";
 
+
+//reusable component
 function Input(props) {
   const [inputValue, setInputValue] = useState(0);
   const dispatch = useDispatch();
@@ -16,7 +18,7 @@ function Input(props) {
       window.alert("We're sorry, you can do a booking for minimum of 1 seat");
       setInputValue(0);
     } else {
-      console.log(event.target.id)
+      // console.log(event.target.id)
       dispatch(seatActions.setValue({ id:event.target.id, value:event.target.value}));
     }
   };

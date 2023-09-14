@@ -117,6 +117,7 @@ const store = configureStore({
     slots: slotSlice.reducer,
     
   },
+  devTools:false
 });
 
 
